@@ -1,0 +1,32 @@
+
+- must
+  - chr3
+  - check gene allele; throw specific message
+  
+  
+meeting
+  - show github
+  
+  
+  
+  integrated functional score
+  density known variants
+  b/d
+  
+  
+- nice to have
+  - responsive site with bootstrap
+
+questions
+  - what about indels
+
+
+for curves (green/red)
+- benign/lipodystrphy
+
+- hightliight clor very light blue
+
+y-axis - density known axis
+x-axis - integrated functional score
+
+

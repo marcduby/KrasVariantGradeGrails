@@ -1,0 +1,84 @@
+/*
+* This is a manifest file that'll be compiled into application.css, which will include all the files
+* listed below.
+*
+* Any CSS file within this directory can be referenced here using a relative path.
+*
+* You're free to add application-wide styles to this file and they'll appear at the top of the
+* compiled file, but it's generally better to create a new file per style scope.
+*
+*= require main
+*= require mobile
+*= require jquery-ui
+*= require_self
+*/
+
+div.apptitle {
+    font-size: 38px;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: darkslategrey;
+}
+
+div.apptitle-black {
+    font-size: 36px;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: black;
+    font-weight: bold;
+}
+
+ul{
+    margin-left:30px;
+}
+span.cap {
+    text-transform: uppercase;
+}
+
+input.searchbox {
+    width: 80%;
+}
+
+input.prevalencebox {
+    width: 40%;
+}
+
+div.reduced-width {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    width: 80%;
+}
+
+div.some-reduced-width {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    width: 95%;
+}
+
+p.small-text {
+    font-size: 14px;
+}
+
+p.bold-text {
+    font-weight: bold;
+}
+
+span.title-black {
+    color: black;
+    font-weight: bold;
+}
+
+div.title-grey {
+    color: grey;
+    font-weight: bold;
+}
+
+div.description {
+    text-align: center;
+}
+
+span.miterItalic {
+    font-style: italic;
+}
