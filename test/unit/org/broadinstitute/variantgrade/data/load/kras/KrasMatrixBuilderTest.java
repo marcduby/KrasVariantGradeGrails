@@ -42,6 +42,7 @@ public class KrasMatrixBuilderTest extends TestCase {
             assertNotNull(heatMapBean.getName());
             assertNotNull(heatMapBean.getPositionMatrixMap());
             assertTrue(heatMapBean.getPositionMatrixMap().size() > 0);
+            assertEquals(187, heatMapBean.getPositionMatrixMap().size());
         }
     }
 

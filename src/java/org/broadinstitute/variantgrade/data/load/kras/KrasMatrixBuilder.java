@@ -59,8 +59,29 @@ public class KrasMatrixBuilder {
             }
         }
 
+        // log
+        this.loaderLogger.info("Have a map of heat maps of number of types: " + heatMapBeanByTypeMap.keySet().size());
+
         // return the heat maps
         return heatMapBeanByTypeMap;
+    }
+
+    private PositionMatrixBean getPositionMastrix(Map<String, HeatMapBean> heatMapBeanByTypeMap, String heatMapType, int position, String referenceAllele, boolean errorIfExistingRefDoesNotMatch) throws GradeException {
+        // local variables
+        HeatMapBean heatMapBean = heatMapBeanByTypeMap.get(KrasDataBean.FUNCTIONAL_SCORE);
+
+        // load the map for the functional score
+        if ( heatMapBean == null) {
+            heatMapBean = new HeatMapBean();
+            heatMapBean.setName(KrasDataBean.FUNCTIONAL_SCORE);
+            heatMapBeanByTypeMap.put(KrasDataBean.FUNCTIONAL_SCORE, heatMapBean);
+        }
+
+        // get the position matrix for the position
+        PositionMatrixBean positionMatrixBean = heatMapBean.getPositionMatrixBean(position, referenceAllele, errorIfExistingRefDoesNotMatch);
+
+        // return
+        return positionMatrixBean;
     }
 
 
