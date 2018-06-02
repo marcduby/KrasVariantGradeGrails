@@ -33,7 +33,7 @@ public class KrasMatrixBuilderTest extends TestCase {
         // test
         assertNotNull(heatMapBeanMap);
         assertTrue(heatMapBeanMap.size() > 0);
-        assertEquals(1, heatMapBeanMap.size());
+        assertEquals(3, heatMapBeanMap.size());
         System.out.println("Got " + heatMapBeanMap.size() + " maps loaded");
 
         // loop through the list and check all data
@@ -44,6 +44,30 @@ public class KrasMatrixBuilderTest extends TestCase {
             assertTrue(heatMapBean.getPositionMatrixMap().size() > 0);
             assertEquals(187, heatMapBean.getPositionMatrixMap().size());
         }
+
+        // check the functional data map
+        HeatMapBean heatMapBean = heatMapBeanMap.get(KrasDataBean.FUNCTIONAL_SCORE);
+        assertNotNull(heatMapBean);
+        assertNotNull(heatMapBean.getName());
+        assertNotNull(heatMapBean.getPositionMatrixMap());
+        assertTrue(heatMapBean.getPositionMatrixMap().size() > 0);
+        assertEquals(187, heatMapBean.getPositionMatrixMap().size());
+
+        // check the functional data map
+        heatMapBean = heatMapBeanMap.get(KrasDataBean.MUTATION);
+        assertNotNull(heatMapBean);
+        assertNotNull(heatMapBean.getName());
+        assertNotNull(heatMapBean.getPositionMatrixMap());
+        assertTrue(heatMapBean.getPositionMatrixMap().size() > 0);
+        assertEquals(187, heatMapBean.getPositionMatrixMap().size());
+
+        // check the functional data map
+        heatMapBean = heatMapBeanMap.get(KrasDataBean.STANDARD_DEVIATION);
+        assertNotNull(heatMapBean);
+        assertNotNull(heatMapBean.getName());
+        assertNotNull(heatMapBean.getPositionMatrixMap());
+        assertTrue(heatMapBean.getPositionMatrixMap().size() > 0);
+        assertEquals(187, heatMapBean.getPositionMatrixMap().size());
     }
 
 

@@ -5,24 +5,23 @@ import org.apache.log4j.Logger;
 import org.broadinstitute.variantgrade.bean.AminoAcidBean;
 import org.broadinstitute.variantgrade.bean.CodingRegion;
 import org.broadinstitute.variantgrade.bean.CodingSegment;
-import org.broadinstitute.variantgrade.bean.DiseaseOddsRatio;
 import org.broadinstitute.variantgrade.bean.Gene;
 import org.broadinstitute.variantgrade.bean.GeneRegion;
 import org.broadinstitute.variantgrade.bean.HeatMapBean;
 import org.broadinstitute.variantgrade.bean.OddsRatioBean;
 import org.broadinstitute.variantgrade.bean.PositionMatrixBean;
+import org.broadinstitute.variantgrade.data.load.kras.KrasDataBean;
+import org.broadinstitute.variantgrade.data.load.kras.KrasMatrixBuilder;
 import org.broadinstitute.variantgrade.translator.SearchInputTranslator;
 import org.broadinstitute.variantgrade.util.GradeException;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +31,7 @@ import java.util.Map;
 public class KrasMatrixParser {
     // instance variables
     Logger matrixLogger = Logger.getLogger(this.getClass().getName());
-    private Map<Integer, HeatMapBean> heatMapBeanMap = new HashMap<Integer, HeatMapBean>();             // a map of heatmaps (position to 20 letter objects) with key by heat map type
+    private Map<String, HeatMapBean> heatMapBeanMap = new HashMap<String, HeatMapBean>();             // a map of heatmaps (position to 20 letter objects) with key by heat map type
     private Map<Integer, PositionMatrixBean> heatMap = new HashMap<Integer, PositionMatrixBean>();
     private Map<Integer, PositionMatrixBean> logpMap = new HashMap<Integer, PositionMatrixBean>();
     private InputStream geneRegionStream;
@@ -52,15 +51,15 @@ public class KrasMatrixParser {
     private static KrasMatrixParser matrixParser;
 
     // constants
-    public static final int MATRIX_TYPE_POSITION_HEAT_A         = 1;
-    public static final int MATRIX_TYPE_POSITION_HEAT_B         = 2;
-    public static final int MATRIX_TYPE_POSITION_HEAT_C         = 3;
-    public static final int MATRIX_TYPE_POSITION_LOGP           = 4;
-    public static final int MATRIX_TYPE_IARC_SOMATIC_COUNT      = 5;
-    public static final int MATRIX_TYPE_IARC_GERMLINE_COUNT     = 6;
-    public static final int MATRIX_TYPE_EXAC_GERMLINE_COUNT     = 7;
-    public static final int MATRIX_TYPE_TRANSC_ACTIVITY_YEAST   = 8;
-    public static final int MATRIX_TYPE_MUTATION_PROBABILITY    = 9;
+//    public static final int MATRIX_TYPE_POSITION_HEAT_A         = 1;
+//    public static final int MATRIX_TYPE_POSITION_HEAT_B         = 2;
+//    public static final int MATRIX_TYPE_POSITION_HEAT_C         = 3;
+//    public static final int MATRIX_TYPE_POSITION_LOGP           = 4;
+//    public static final int MATRIX_TYPE_IARC_SOMATIC_COUNT      = 5;
+//    public static final int MATRIX_TYPE_IARC_GERMLINE_COUNT     = 6;
+//    public static final int MATRIX_TYPE_EXAC_GERMLINE_COUNT     = 7;
+//    public static final int MATRIX_TYPE_TRANSC_ACTIVITY_YEAST   = 8;
+//    public static final int MATRIX_TYPE_MUTATION_PROBABILITY    = 9;
 
     /**
      * singleton method to return parser
@@ -75,14 +74,14 @@ public class KrasMatrixParser {
         return matrixParser;
     }
 
-    public void setHeatMapStream(Integer type, InputStream heatMapStream) {
-        if (this.heatMapBeanMap.get(type) == null) {
-            this.heatMapBeanMap.put(type, new HeatMapBean());
-        }
-
-        this.heatMapBeanMap.get(type).setHeatMapStream(heatMapStream);
-    }
-
+//    public void setHeatMapStream(Integer type, InputStream heatMapStream) {
+//        if (this.heatMapBeanMap.get(type) == null) {
+//            this.heatMapBeanMap.put(type, new HeatMapBean());
+//        }
+//
+//        this.heatMapBeanMap.get(type).setHeatMapStream(heatMapStream);
+//    }
+//
     public void setGeneRegionStream(InputStream geneRegionStream) {
         this.geneRegionStream = geneRegionStream;
     }
@@ -175,23 +174,13 @@ public class KrasMatrixParser {
      * populates the instance heat map from the given file
      * @throws GradeException
      */
-    public synchronized void populate() throws GradeException {
+    public synchronized void populate(InputStream inputStream) throws GradeException {
         if (!this.isInitialized) {
-            // populate the heat matrix
-            Iterator<Integer> matrixTypeIterator = this.heatMapBeanMap.keySet().iterator();
-            while (matrixTypeIterator.hasNext()) {
-                Integer matrixType = matrixTypeIterator.next();
+            // get the matrix builder
+            KrasMatrixBuilder krasMatrixBuilder = new KrasMatrixBuilder();
 
-                this.matrixLogger.info("populating matrix of type: " + matrixType);
-
-                this.populateMatrix(matrixType);
-            }
-//            this.populateMatrix(MATRIX_TYPE_POSITION_HEAT_A);
-//            this.populateMatrix(MATRIX_TYPE_POSITION_HEAT_B);
-//            this.populateMatrix(MATRIX_TYPE_POSITION_HEAT_C);
-
-            // populate the logp matrix
-//            this.populateMatrix(MATRIX_TYPE_POSITION_LOGP);
+            // get the maps of heat maps
+            this.heatMapBeanMap = krasMatrixBuilder.loadHeatMaps(inputStream);
 
             // set initialization
             this.isInitialized = true;
@@ -223,6 +212,7 @@ public class KrasMatrixParser {
      * @param matrixType
      * @throws GradeException
      */
+    /*
     protected void populateMatrix(int matrixType) throws GradeException {
         // local variables
         BufferedReader reader = null;
@@ -348,6 +338,7 @@ public class KrasMatrixParser {
             }
         }
     }
+*/
 
     /**
      * get the logp value for the given position and letter
@@ -358,44 +349,44 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public Double getLogPForPositionLetterAndProbability(int position, String letter, Double prevalance) throws GradeException {
-        // local variables
-        Double returnLog = null;
-        Double logP = null;
-        Double oddsRatio;
+//    public Double getDoubleEntryForPositionLetterAndProbability(int position, String letter, Double prevalance) throws GradeException {
+//        // local variables
+//        Double returnLog = null;
+//        Double logP = null;
+//        Double oddsRatio;
+//
+//        // get the logp value
+//        logP = this.getMatrixValueAtPositionAndLetterAndType(position, letter, MATRIX_TYPE_POSITION_LOGP, false);
+//
+//        // calculate the odds ration
+//        oddsRatio = (1 - prevalance) / prevalance;
+//
+//        // calculate the logP value
+//        returnLog = logP + Math.log(oddsRatio);
+//
+//        // this is log (B : p)
+//        // if > 0,,
+//        // return
+//        return returnLog;
+//    }
 
-        // get the logp value
-        logP = this.getMatrixValueAtPositionAndLetterAndType(position, letter, MATRIX_TYPE_POSITION_LOGP, false);
-
-        // calculate the odds ration
-        oddsRatio = (1 - prevalance) / prevalance;
-
-        // calculate the logP value
-        returnLog = logP + Math.log(oddsRatio);
-
-        // this is log (B : p)
-        // if > 0,,
-        // return
-        return returnLog;
-    }
-
-    public Double getDiseaseOddsForPositionLetterAndPrevalence(int position, String letter, Double prevalance) throws GradeException {
-        // local variables
-        Double logp = null;
-        Double odds = null;
-        Double exponentinalTemp = null;
-
-        // get the logp with the prevalence included
-        logp = this.getLogPForPositionLetterAndProbability(position, letter, prevalance);
-
-        // exponentiate and subtract from 1
-        exponentinalTemp = Math.exp(logp);
-        odds = exponentinalTemp / (exponentinalTemp + 1);
-        odds = 1 - odds;
-
-        //return
-        return odds;
-    }
+//    public Double getDiseaseOddsForPositionLetterAndPrevalence(int position, String letter, Double prevalance) throws GradeException {
+//        // local variables
+//        Double logp = null;
+//        Double odds = null;
+//        Double exponentinalTemp = null;
+//
+//        // get the logp with the prevalence included
+//        logp = this.getLogPForPositionLetterAndProbability(position, letter, prevalance);
+//
+//        // exponentiate and subtract from 1
+//        exponentinalTemp = Math.exp(logp);
+//        odds = exponentinalTemp / (exponentinalTemp + 1);
+//        odds = 1 - odds;
+//
+//        //return
+//        return odds;
+//    }
 
     /**
      * get the odds of disease risk given a position, letter and prevalence
@@ -406,21 +397,21 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public DiseaseOddsRatio getOddOfDiseaseNumber(int position, String letter, Double prevalence) throws GradeException {
-        // local variables
-        DiseaseOddsRatio oddsRatio = new DiseaseOddsRatio();
-        Double logP;
-        Double expP;
-
-        // get the logp value
-        logP = this.getLogPForPositionLetterAndProbability(position, letter, prevalence);
-
-        // get the odds ratio
-        oddsRatio = this.getOddOfDiseaseNumber(logP);
-
-        // return
-        return oddsRatio;
-    }
+//    public DiseaseOddsRatio getOddOfDiseaseNumber(int position, String letter, Double prevalence) throws GradeException {
+//        // local variables
+//        DiseaseOddsRatio oddsRatio = new DiseaseOddsRatio();
+//        Double logP;
+//        Double expP;
+//
+//        // get the logp value
+//        logP = this.getLogPForPositionLetterAndProbability(position, letter, prevalence);
+//
+//        // get the odds ratio
+//        oddsRatio = this.getOddOfDiseaseNumber(logP);
+//
+//        // return
+//        return oddsRatio;
+//    }
 
     /**
      * get the odds of disease based on a log value
@@ -429,25 +420,25 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public DiseaseOddsRatio getOddOfDiseaseNumber(double logP) throws GradeException {
-        // local variables
-        DiseaseOddsRatio oddsRatio = new DiseaseOddsRatio();
-        Double expP;
-
-        // if positive, use exp() as benign odds value
-        if (logP > 0) {
-            expP = Math.exp(logP);
-            oddsRatio.setBenignOdds(expP.intValue());
-
-            // if not, use number as deleterious odds value
-        } else {
-            expP = Math.exp(logP);
-            oddsRatio.setDeleteriousOdds(expP.intValue());
-        }
-
-        // return
-        return oddsRatio;
-    }
+//    public DiseaseOddsRatio getOddOfDiseaseNumber(double logP) throws GradeException {
+//        // local variables
+//        DiseaseOddsRatio oddsRatio = new DiseaseOddsRatio();
+//        Double expP;
+//
+//        // if positive, use exp() as benign odds value
+//        if (logP > 0) {
+//            expP = Math.exp(logP);
+//            oddsRatio.setBenignOdds(expP.intValue());
+//
+//            // if not, use number as deleterious odds value
+//        } else {
+//            expP = Math.exp(logP);
+//            oddsRatio.setDeleteriousOdds(expP.intValue());
+//        }
+//
+//        // return
+//        return oddsRatio;
+//    }
 
     /**
      * returns the pValue of a result
@@ -458,20 +449,20 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public Double getResultPValueForPositionLetterAndProbability(int position, String letter, Double probability) throws GradeException {
-        // local variables
-        Double pValue;
-        Double logp;
-
-        // get the logp
-        logp = this.getLogPForPositionLetterAndProbability(position, letter, probability);
-
-        // calculate the pValue
-        pValue = Math.exp(logp) / (Math.exp(logp) + 1);
-
-        // return
-        return pValue;
-    }
+//    public Double getResultPValueForPositionLetterAndProbability(int position, String letter, Double probability) throws GradeException {
+//        // local variables
+//        Double pValue;
+//        Double logp;
+//
+//        // get the logp
+//        logp = this.getLogPForPositionLetterAndProbability(position, letter, probability);
+//
+//        // calculate the pValue
+//        pValue = Math.exp(logp) / (Math.exp(logp) + 1);
+//
+//        // return
+//        return pValue;
+//    }
 
     /**
      * return the odds ratio option map
@@ -499,7 +490,7 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public Double getMatrixValueAtPositionAndLetterAndType(int position, String letter, int matrixType, boolean isNullOk) throws GradeException {
+    public Double getDoubleMatrixValueAtPositionAndLetterAndType(int position, String letter, String matrixType, boolean isNullOk) throws GradeException {
         // local variables
         PositionMatrixBean positionMatrixBean;
         Double heatNumber = null;
@@ -508,7 +499,35 @@ public class KrasMatrixParser {
         positionMatrixBean = this.getPositionMatrixAtPositionAndType(position, matrixType);
 
         // get the heat number
-        heatNumber = positionMatrixBean.getHeatNumber(letter);
+        heatNumber = positionMatrixBean.getDoubleHeatEntry(letter);
+
+        // if null, error
+        if (!isNullOk && (heatNumber == null)) {
+            throw new GradeException("Got null heat number heat for position: " + position + " and letter: " + letter);
+        }
+
+        // return
+        return heatNumber;
+    }
+
+    /**
+     * get the heat map number for the given position and reference letter
+     *
+     * @param position
+     * @param letter
+     * @return
+     * @throws GradeException
+     */
+    public String getStringMatrixValueAtPositionAndLetterAndType(int position, String letter, String matrixType, boolean isNullOk) throws GradeException {
+        // local variables
+        PositionMatrixBean positionMatrixBean;
+        String heatNumber = null;
+
+        // get the position heat
+        positionMatrixBean = this.getPositionMatrixAtPositionAndType(position, matrixType);
+
+        // get the heat number
+        heatNumber = positionMatrixBean.getStringHeatEntry(letter);
 
         // if null, error
         if (!isNullOk && (heatNumber == null)) {
@@ -527,31 +546,31 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public String getType2DiabetesRiskAtPositionAndLetterAndType(int position, String letter) throws GradeException {
-        // local variables
-        Double heatNumber = null;
-        String diabetesRiskString = "";
-
-        // get the position heat
-        heatNumber = this.getFunctionalScoreAtPositionAndLetter(position, letter);
-
-        // if null, error
-        if (heatNumber == null) {
-            throw new GradeException("Got null heat number heat for position: " + position + " and letter: " + letter);
-        }
-
-        // get the diabetes risk string
-        if (heatNumber < -0.252) {
-            diabetesRiskString = "6.5-fold increased risk";
-        } else if (heatNumber > 0.998) {
-            diabetesRiskString = "no increased risk";
-        } else {
-            diabetesRiskString = "2-fold increased risk";
-        }
-
-        // return
-        return diabetesRiskString;
-    }
+//    public String getType2DiabetesRiskAtPositionAndLetterAndType(int position, String letter) throws GradeException {
+//        // local variables
+//        Double heatNumber = null;
+//        String diabetesRiskString = "";
+//
+//        // get the position heat
+//        heatNumber = this.getFunctionalScoreAtPositionAndLetter(position, letter);
+//
+//        // if null, error
+//        if (heatNumber == null) {
+//            throw new GradeException("Got null heat number heat for position: " + position + " and letter: " + letter);
+//        }
+//
+//        // get the diabetes risk string
+//        if (heatNumber < -0.252) {
+//            diabetesRiskString = "6.5-fold increased risk";
+//        } else if (heatNumber > 0.998) {
+//            diabetesRiskString = "no increased risk";
+//        } else {
+//            diabetesRiskString = "2-fold increased risk";
+//        }
+//
+//        // return
+//        return diabetesRiskString;
+//    }
 
     /**
      * central method to return the functional score
@@ -563,31 +582,31 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public Double getFunctionalScoreAtPositionAndLetter(Integer position, String letter) throws GradeException {
-        // local variables
-        Double heatNumber = null;
-        String diabetesRiskString = "";
-        Double firstDouble = null;
-        Double secondDouble = null;
-        Double thirdDouble = null;
-
-        // get the numbers
-        firstDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_A, false);
-        secondDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_B, false);
-        thirdDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_C, false);
-
-        // get the position heat
-//        heatNumber = firstDouble + secondDouble - thirdDouble;
-        heatNumber = this.getCancerGradeFunctionScore(firstDouble, secondDouble, thirdDouble);
-
-        // if null, error
-        if (heatNumber == null) {
-            throw new GradeException("Got null heat number heat for position: " + position + " and letter: " + letter);
-        }
-
-        // return
-        return heatNumber;
-    }
+//    public Double getFunctionalScoreAtPositionAndLetter(Integer position, String letter) throws GradeException {
+//        // local variables
+//        Double heatNumber = null;
+//        String diabetesRiskString = "";
+//        Double firstDouble = null;
+//        Double secondDouble = null;
+//        Double thirdDouble = null;
+//
+//        // get the numbers
+//        firstDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_A, false);
+//        secondDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_B, false);
+//        thirdDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_C, false);
+//
+//        // get the position heat
+////        heatNumber = firstDouble + secondDouble - thirdDouble;
+//        heatNumber = this.getCancerGradeFunctionScore(firstDouble, secondDouble, thirdDouble);
+//
+//        // if null, error
+//        if (heatNumber == null) {
+//            throw new GradeException("Got null heat number heat for position: " + position + " and letter: " + letter);
+//        }
+//
+//        // return
+//        return heatNumber;
+//    }
 
     /**
      * central method to return the functional score standard deviation
@@ -599,31 +618,31 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public Double getFunctionalScoreStandardDeviationAtPositionAndLetter(Integer position, String letter) throws GradeException {
-        // local variables
-        Double heatNumber = null;
-        String diabetesRiskString = "";
-        Double firstDouble = null;
-        Double secondDouble = null;
-        Double thirdDouble = null;
-
-        // get the numbers
-        firstDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_A, false);
-        secondDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_B, false);
-        thirdDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_C, false);
-
-        // get the position heat
-//        heatNumber = firstDouble + secondDouble - thirdDouble;
-        heatNumber = this.getCancerGradeFunctionScoreStandardDev(firstDouble, secondDouble, thirdDouble);
-
-        // if null, error
-        if (heatNumber == null) {
-            throw new GradeException("Got null heat number heat standard deviation for position: " + position + " and letter: " + letter);
-        }
-
-        // return
-        return heatNumber;
-    }
+//    public Double getFunctionalScoreStandardDeviationAtPositionAndLetter(Integer position, String letter) throws GradeException {
+//        // local variables
+//        Double heatNumber = null;
+//        String diabetesRiskString = "";
+//        Double firstDouble = null;
+//        Double secondDouble = null;
+//        Double thirdDouble = null;
+//
+//        // get the numbers
+//        firstDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_A, false);
+//        secondDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_B, false);
+//        thirdDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, KrasMatrixParser.MATRIX_TYPE_POSITION_HEAT_C, false);
+//
+//        // get the position heat
+////        heatNumber = firstDouble + secondDouble - thirdDouble;
+//        heatNumber = this.getCancerGradeFunctionScoreStandardDev(firstDouble, secondDouble, thirdDouble);
+//
+//        // if null, error
+//        if (heatNumber == null) {
+//            throw new GradeException("Got null heat number heat standard deviation for position: " + position + " and letter: " + letter);
+//        }
+//
+//        // return
+//        return heatNumber;
+//    }
 
     /**
      * returns mutant p53 application experimental function score
@@ -672,7 +691,7 @@ public class KrasMatrixParser {
      * @return
      * @throws GradeException
      */
-    public PositionMatrixBean getPositionMatrixAtPositionAndType(int position, int matrixType) throws GradeException {
+    public PositionMatrixBean getPositionMatrixAtPositionAndType(int position, String matrixType) throws GradeException {
         // local variables
         PositionMatrixBean positionMatrixBean;
         Map<Integer, PositionMatrixBean> heatMap = null;
@@ -870,7 +889,7 @@ public class KrasMatrixParser {
         PositionMatrixBean positionMatrixBean = null;
 
         // get the position heat
-        positionMatrixBean = this.getPositionMatrixAtPositionAndType(position, MATRIX_TYPE_POSITION_HEAT_A);
+        positionMatrixBean = this.getPositionMatrixAtPositionAndType(position, KrasDataBean.FUNCTIONAL_SCORE);
 
         // if null throw error
         if (positionMatrixBean == null) {
