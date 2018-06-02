@@ -14,9 +14,19 @@
 		<g:layoutHead/>
 	</head>
 	<body>
-		<div id="grailsLogo" role="banner" class="apptitle"><span class="title-black">PH</span>enotypic <span class="title-black">AN</span>notation of <span class="title-black">T</span>P53 <span class="title-black">M</span>utations (beta)</div>
+		<g:if test="${request.forwardURI.contains('/krasMap')}">
+			<div id="grailsLogoKras" role="banner" class="apptitle">Phenotypic Annotation of <span class="title-black">KRAS</span> Mutations (beta)</div>
+		</g:if>
+		<g:else>
+			<div id="grailsLogo" role="banner" class="apptitle"><span class="title-black">PH</span>enotypic <span class="title-black">AN</span>notation of <span class="title-black">T</span>P53 <span class="title-black">M</span>utations (beta)</div>
+		</g:else>
 		<g:layoutBody/>
-		<div class="footer" role="contentinfo">
+		<g:if test="${request.forwardURI.contains('/krasMap')}">
+			<div class="footerKras" role="contentinfo">
+		</g:if>
+		<g:else>
+			<div class="footer" role="contentinfo">
+		</g:else>
         <div>Software version 0.36. Data version 1.0.</div>
         <div>Copyright Reserved 2017. All rights reserved.</div>
         <div>This software is supplied without warranty or guaranteed support. No responsibility is assumed by the authors for its use, misuse, or functionality.</div>
