@@ -29,10 +29,10 @@ import java.util.Map;
 /**
  * Created by mduby on 12/22/15.
  */
-public class MatrixParser {
+public class Tp53MatrixParser {
     // instance variables
     Logger matrixLogger = Logger.getLogger(this.getClass().getName());
-    private Map<Integer, HeatMapBean> heatMapBeanMap = new HashMap<Integer, HeatMapBean>();             // a map of heatmaps (position to 20 letter objects) with key by heat map type
+    private Map<Integer, HeatMapBean> heatMapBeanMap = new HashMap<Integer, HeatMapBean>();
     private Map<Integer, PositionMatrixBean> heatMap = new HashMap<Integer, PositionMatrixBean>();
     private Map<Integer, PositionMatrixBean> logpMap = new HashMap<Integer, PositionMatrixBean>();
     private InputStream geneRegionStream;
@@ -49,7 +49,7 @@ public class MatrixParser {
     private final String proteinString = "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
 
     // singleton variable
-    private static MatrixParser matrixParser;
+    private static Tp53MatrixParser matrixParser;
 
     // constants
     public static final int MATRIX_TYPE_POSITION_HEAT_A         = 1;
@@ -67,9 +67,9 @@ public class MatrixParser {
      *
      * @return
      */
-    public static MatrixParser getMatrixParser() {
+    public static Tp53MatrixParser getMatrixParser() {
         if (matrixParser == null) {
-            matrixParser = new MatrixParser();
+            matrixParser = new Tp53MatrixParser();
         }
 
         return matrixParser;
@@ -572,9 +572,9 @@ public class MatrixParser {
         Double thirdDouble = null;
 
         // get the numbers
-        firstDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, MatrixParser.MATRIX_TYPE_POSITION_HEAT_A, false);
-        secondDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, MatrixParser.MATRIX_TYPE_POSITION_HEAT_B, false);
-        thirdDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, MatrixParser.MATRIX_TYPE_POSITION_HEAT_C, false);
+        firstDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, Tp53MatrixParser.MATRIX_TYPE_POSITION_HEAT_A, false);
+        secondDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, Tp53MatrixParser.MATRIX_TYPE_POSITION_HEAT_B, false);
+        thirdDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, Tp53MatrixParser.MATRIX_TYPE_POSITION_HEAT_C, false);
 
         // get the position heat
 //        heatNumber = firstDouble + secondDouble - thirdDouble;
@@ -608,9 +608,9 @@ public class MatrixParser {
         Double thirdDouble = null;
 
         // get the numbers
-        firstDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, MatrixParser.MATRIX_TYPE_POSITION_HEAT_A, false);
-        secondDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, MatrixParser.MATRIX_TYPE_POSITION_HEAT_B, false);
-        thirdDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, MatrixParser.MATRIX_TYPE_POSITION_HEAT_C, false);
+        firstDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, Tp53MatrixParser.MATRIX_TYPE_POSITION_HEAT_A, false);
+        secondDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, Tp53MatrixParser.MATRIX_TYPE_POSITION_HEAT_B, false);
+        thirdDouble = this.getMatrixValueAtPositionAndLetterAndType(position, letter, Tp53MatrixParser.MATRIX_TYPE_POSITION_HEAT_C, false);
 
         // get the position heat
 //        heatNumber = firstDouble + secondDouble - thirdDouble;

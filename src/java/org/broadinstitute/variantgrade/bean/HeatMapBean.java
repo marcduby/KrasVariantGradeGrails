@@ -1,5 +1,7 @@
 package org.broadinstitute.variantgrade.bean;
 
+import org.broadinstitute.variantgrade.util.GradeException;
+
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +13,7 @@ import java.util.Map;
  */
 public class HeatMapBean {
     // instance variables
-    private Map<Integer, PositionMatrixBean> heatMap = new HashMap<Integer, PositionMatrixBean>();
+    private Map<Integer, PositionMatrixBean> positionMatrixMap = new HashMap<Integer, PositionMatrixBean>();              // map of position to heat map
     private String name;
     private InputStream heatMapStream;
 
@@ -24,12 +26,47 @@ public class HeatMapBean {
     }
 
     public Map<Integer, PositionMatrixBean> getHeatMap() {
-
-        return heatMap;
+        return positionMatrixMap;
     }
 
-    public void setHeatMap(Map<Integer, PositionMatrixBean> heatMap) {
-        this.heatMap = heatMap;
+    public Map<Integer, PositionMatrixBean> getPositionMatrixMap() {
+        return positionMatrixMap;
+    }
+
+    /**
+     * get the position mtrix at the position given
+     *
+     * @param position
+     * @param referenceAllele
+     * @param throwsErrorIfRefAlleleDiffernent
+     * @return
+     * @throws GradeException
+     */
+    public PositionMatrixBean getPositionMatrixBean(Integer position, String referenceAllele, boolean throwsErrorIfRefAlleleDiffernent) throws GradeException {
+        PositionMatrixBean positionMatrixBean = this.positionMatrixMap.get(position);
+
+        // if null create and set reference
+        if (positionMatrixBean == null) {
+            positionMatrixBean = new PositionMatrixBean(position, referenceAllele);
+            this.positionMatrixMap.put(position, positionMatrixBean);
+
+        } else {
+            if (throwsErrorIfRefAlleleDiffernent) {
+                if (referenceAllele == null) {
+                    throw new GradeException("provided null reference allele for lookup");
+
+                } else if (!referenceAllele.equalsIgnoreCase(positionMatrixBean.getReferenceLetter())) {
+                    throw new GradeException("provided reference allele: '" + referenceAllele + "' is different from the matrix allele: '" + positionMatrixBean.getReferenceLetter() +"'");
+                }
+            }
+        }
+
+        // return
+        return positionMatrixBean;
+    }
+
+    public void setPositionMatrixMap(Map<Integer, PositionMatrixBean> positionMatrixMap) {
+        this.positionMatrixMap = positionMatrixMap;
     }
 
     public InputStream getHeatMapStream() {
