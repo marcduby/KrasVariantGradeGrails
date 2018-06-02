@@ -1,10 +1,11 @@
 package org.broadinstitute.variantgrade
+
 import org.broadinstitute.variantgrade.result.ProteinResult
 import org.broadinstitute.variantgrade.util.GradeException
 
 class KrasMapController {
     // services
-    KrasMapService heatMapService
+    KrasMapService krasMapService
 
     // instance variables
     private String passcode = "broadvariantfunction";
@@ -41,7 +42,7 @@ class KrasMapController {
             log.info("adding user: " + session.user)
 
             // get the protein reference letter list
-            List<String> referenceLetterList = this.heatMapService.getProteinReferenceLetterList();
+            List<String> referenceLetterList = this.krasMapService.getProteinReferenceLetterList();
 
             // render
             render(view: "proteinFormKras", model: [referenceLetterList: referenceLetterList])
@@ -54,7 +55,7 @@ class KrasMapController {
 
     def loginOld() {
         // get the protein reference letter list
-        List<String> referenceLetterList = this.heatMapService.getProteinReferenceLetterList();
+        List<String> referenceLetterList = this.krasMapService.getProteinReferenceLetterList();
 
         // render
         render(view: "proteinFormKras", model: [referenceLetterList: referenceLetterList])
@@ -85,7 +86,7 @@ class KrasMapController {
         ProteinResult proteinResult = null;
 
         // get the protein reference letter list
-        List<String> referenceLetterList = this.heatMapService.getProteinReferenceLetterList();
+        List<String> referenceLetterList = this.krasMapService.getProteinReferenceLetterList();
 
         // prevalence setting
         String lastPrevalence = params.prevalence?.trim();
@@ -97,7 +98,7 @@ class KrasMapController {
         if (params.query && lastPrevalence) {
             try {
                 // get the result
-                proteinResult = this.heatMapService.getHeatMapReadingFromSearchString(lastQuery, lastPrevalence)
+                proteinResult = this.krasMapService.getHeatMapReadingFromSearchString(lastQuery, lastPrevalence)
 
                 // log
                 log.info("for protein position: " + position + " and letter: " + referenceLetter + " got result:" + proteinResult.getHeatAmount())

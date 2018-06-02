@@ -141,6 +141,59 @@ public class KrasMatrixBuilder {
                 positionMatrixBean.addDoubleHeatEntry(krasDataBean.getAltAllele(), krasDataBean.getStandardDeviationFunctionalScore());
             }
 
+
+            // get the functional score position matrix for the position
+            positionMatrixBean = this.getPositionMastrix(heatMapBeanByTypeMap, KrasDataBean.COSMIC, krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+            // heatMapBean.getPositionMatrixBean(krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+
+            // add an entry for the alt allele
+            if (positionMatrixBean.getDoubleHeatEntry(krasDataBean.getAltAllele()) != null) {
+                throw new GradeException("Already have double entry at alt allele: " + krasDataBean.getAltAllele());
+
+            } else {
+                positionMatrixBean.addDoubleHeatEntry(krasDataBean.getAltAllele(), new Double(krasDataBean.getCosmicCancerIncidence()));
+            }
+
+            // get the functional score position matrix for the position
+            positionMatrixBean = this.getPositionMastrix(heatMapBeanByTypeMap, KrasDataBean.GENIE, krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+            // heatMapBean.getPositionMatrixBean(krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+
+            // add an entry for the alt allele
+            if (positionMatrixBean.getDoubleHeatEntry(krasDataBean.getAltAllele()) != null) {
+                throw new GradeException("Already have double entry at alt allele: " + krasDataBean.getAltAllele());
+
+            } else {
+                positionMatrixBean.addDoubleHeatEntry(krasDataBean.getAltAllele(), new Double(krasDataBean.getGenieCancerIncidence()));
+            }
+
+            // get the functional score position matrix for the position
+            positionMatrixBean = this.getPositionMastrix(heatMapBeanByTypeMap, KrasDataBean.TCGA, krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+            // heatMapBean.getPositionMatrixBean(krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+
+            // add an entry for the alt allele
+            if (positionMatrixBean.getDoubleHeatEntry(krasDataBean.getAltAllele()) != null) {
+                throw new GradeException("Already have double entry at alt allele: " + krasDataBean.getAltAllele());
+
+            } else {
+                positionMatrixBean.addDoubleHeatEntry(krasDataBean.getAltAllele(), new Double(krasDataBean.getTcgaCancerIncidence()));
+            }
+
+            // get the functional score position matrix for the position
+            positionMatrixBean = this.getPositionMastrix(heatMapBeanByTypeMap, KrasDataBean.EXAC, krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+            // heatMapBean.getPositionMatrixBean(krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+
+            // add an entry for the alt allele
+            if (positionMatrixBean.getDoubleHeatEntry(krasDataBean.getAltAllele()) != null) {
+                throw new GradeException("Already have double entry at alt allele: " + krasDataBean.getAltAllele());
+
+            } else {
+                positionMatrixBean.addDoubleHeatEntry(krasDataBean.getAltAllele(), new Double(krasDataBean.getExacGermlineIncidence()));
+            }
+
+
+
+
+
             // get the mutation position matrix for the position
             positionMatrixBean = this.getPositionMastrix(heatMapBeanByTypeMap, KrasDataBean.MUTATION, krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
             // heatMapBean.getPositionMatrixBean(krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
@@ -151,6 +204,18 @@ public class KrasMatrixBuilder {
 
             } else {
                 positionMatrixBean.addStringHeatEntry(krasDataBean.getAltAllele(), krasDataBean.getMutation());
+            }
+
+            // get the mutation position matrix for the position
+            positionMatrixBean = this.getPositionMastrix(heatMapBeanByTypeMap, KrasDataBean.NUM_NUCLEOTIDE, krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+            // heatMapBean.getPositionMatrixBean(krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+
+            // add an entry for the alt allele
+            if (positionMatrixBean.getStringHeatEntry(krasDataBean.getAltAllele()) != null) {
+                throw new GradeException("Already have string entry at alt allele: " + krasDataBean.getAltAllele());
+
+            } else {
+                positionMatrixBean.addStringHeatEntry(krasDataBean.getAltAllele(), krasDataBean.getNumberNucleotideSubstitution());
             }
         }
 

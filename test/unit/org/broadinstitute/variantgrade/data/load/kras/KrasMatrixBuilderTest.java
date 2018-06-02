@@ -33,7 +33,7 @@ public class KrasMatrixBuilderTest extends TestCase {
         // test
         assertNotNull(heatMapBeanMap);
         assertTrue(heatMapBeanMap.size() > 0);
-        assertEquals(3, heatMapBeanMap.size());
+        assertEquals(8, heatMapBeanMap.size());
         System.out.println("Got " + heatMapBeanMap.size() + " maps loaded");
 
         // loop through the list and check all data

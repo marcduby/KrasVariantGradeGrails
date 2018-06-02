@@ -170,7 +170,7 @@
                                             <td>${proteinResult.getAminoAcidReference()}</td>
                                         </tr>
                                         <tr>
-                                            <td>Protein change</td>
+                                            <td>Mutation</td>
                                             <td>${proteinResult.getScientificAlleleCode()}</td>
                                         </tr>
                                         <tr>
@@ -182,25 +182,6 @@
                                             <td># of IARC somatic mutations (human tumors)  <a href="#" title="Add # IARC somatic mutations text here"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td>${proteinResult.getSomaticIarcMutationCount()}</td>
                                         </tr>
-
-                            <g:if test="${false}">
-                                        <tr>
-                                            <td>At disease prevalence</td>
-                                            <td>${proteinResult.getInputPrevalence()}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Probability of causing FPLD3  <a href="#" title="The likelihood that the variant queried causes FPLD3. Calculated by combining experimental function score with disease prevalence inputted."><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getOddsRatioOfDiseaseString()}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Clinical prediction for FPLD3  <a href="#" title='An assessment to guide clinical decisions regarding whether the variant is likely to cause FPLD3 (“pathogenic”) or unlikely (“not pathogenic”).'><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getEffect()}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Clinical prediction for type 2 diabetes <a href="#" title='The risk for type 2 diabetes conferred by the variant as estimated from PPARG variant carriers identified in 21,000 case/controls.'><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getDiabetesRiskString()}</td>
-                                        </tr>
-                            </g:if>
 
                                         </tbody>
                                     </table>
@@ -224,79 +205,40 @@
                                             <td>${proteinResult.getAminoAcidReference()}</td>
                                         </tr>
 
-                                <g:if test="${false}">
-                                        <tr>
-                                            <td>Reference codon  <a href="#" title="The three nucleotide sequence specifying the reference amino acid."><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td><span class="cap">${proteinResult.getReferenceCodon()}</span></td>
-                                        </tr>
-                                </g:if>
-
                                         <tr class="tightrow">
                                             <td>Protein change <a href="#" title="Numbering with respect to p53 isoform a"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td>${proteinResult.getScientificAlleleCode()}</td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td>Combined phenotype score  <a href="#" title="Also referred to as combined phenotype score in Giacomelli et al. 2018"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td>Number of nucleotide substitution  <a href="#" title="TBD"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td>${proteinResult.getNumberNucleotideSubstitution()}</td>
+                                        </tr>
+
+                                        <tr class="tightrow">
+                                            <td>Experimental function score  <a href="#" title="Also referred to as combined phenotype score in Ly et al. 2018"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getHeatAmount()}" type="number" maxFractionDigits="3" /> &#177; <g:formatNumber number="${proteinResult.getHeatAmountStandardDeviation()}" type="number" maxFractionDigits="3" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of IARC somatic mutations (human tumors)  <a href="#" title="Petitjean et al. Human Mutation. 2007
-
-Bouaoun et al. Human Mutation. 2016
-
-IARC database R18 April 2016"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getSomaticIarcMutationCount()}</td>
+                                            <td># of COSMIC somatic mutations (human tumors)  <a href="#" title="TBD"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsCosmic()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of IARC germline mutations (LFL/LFS individuals)  <a href="#" title="Petitjean et al. Human Mutation. 2007
-
-Bouaoun et al. Human Mutation. 2016
-
-IARC database R18 April 2016"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getGermlineIarcMutationCount()}</td>
+                                            <td># of GENIE somatic mutations (human tumors)  <a href="#" title="TBD"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsGenie()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of ExAC germline mutations (unselected individuals)  <a href="#" title="Lek et al. Nature. 2016.&nbsp;&nbsp;
-
-Data release 1.0 February 2017"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getGermlineExacMutationCount()}</td>
+                                            <td># of TCGA somatic mutations (human tumors)  <a href="#" title="TBD"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsTcga()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td>Transcriptional activity in yeast (% of wild-type)  <a href="#" title="Kato et al. PNAS. 2003"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getTranscriptionalActivityYeastPercent()}</td>
+                                            <td># of ExAC germline mutations (unselected individuals)  <a href="#" title="Kato et al. PNAS. 2003"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td><g:formatNumber number="${proteinResult.getNumbergermlineMutationsExac()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
-
-                                        <tr class="tightrow">
-                                            <td>Mutation probability (COSMIC Signature 1 percentile)  <a href="#" title="Alexandrov et al. Nature. 2013
-
-Alexandrov et al. Nature Genetics. 2015"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getMutationProbability()}</td>
-                                        </tr>
-
-
-                                <g:if test="${false}">
-                                        <tr>
-                                            <td>At disease prevalence</td>
-                                            <td>${proteinResult.getInputPrevalence()}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Probability of causing FPLD3  <a href="#" title="The likelihood that the variant queried causes FPLD3. Calculated by combining the combined phenotype score with disease prevalence inputted."><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getOddsRatioOfDiseaseString()}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Clinical prediction for FPLD3  <a href="#" title='An assessment to guide clinical decisions regarding whether the variant is likely to cause FPLD3 (“pathogenic”) or unlikely (“not pathogenic”).'><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getEffect()}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Clinical prediction for type 2 diabetes <a href="#" title='The risk for type 2 diabetes conferred by the variant as estimated from PPARG variant carriers identified in 21,000 case/controls.'><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td>${proteinResult.getDiabetesRiskString()}</td>
-                                        </tr>
-                                </g:if>
 
                                         </tbody>
                                     </table>

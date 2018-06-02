@@ -2,6 +2,7 @@ package org.broadinstitute.variantgrade.result.kras;
 
 import org.broadinstitute.variantgrade.bean.DiseaseOddsRatio;
 import org.broadinstitute.variantgrade.bean.OddsRatioBean;
+import org.broadinstitute.variantgrade.result.ProteinResult;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -9,7 +10,7 @@ import java.text.NumberFormat;
 /**
  * Created by mduby on 12/27/15.
  */
-public class KrasProteinResult {
+public class KrasProteinResult extends ProteinResult {
     // instance variables
     private Integer position;
     private String inputAllele;
@@ -32,6 +33,14 @@ public class KrasProteinResult {
     private String diabetesRiskString;
     private String aminoAcidReference;
     private String aminoAcidAlllele;
+
+    // kras specific properties
+    private String mutation;
+    private String numberNucleotideSubstitution;
+    private Double numberSomaticMutationsCosmic;
+    private Double numberSomaticMutationsTcga;
+    private Double numberSomaticMutationsGenie;
+    private Double numbergermlineMutationsExac;
 
     // cmiter specific properties
     private String somaticIarcMutationCount;
@@ -346,6 +355,54 @@ public class KrasProteinResult {
 
     public void setDiseaseOddsRatio(DiseaseOddsRatio diseaseOddsRatio) {
         this.diseaseOddsRatio = diseaseOddsRatio;
+    }
+
+    public String getMutation() {
+        return mutation;
+    }
+
+    public void setMutation(String mutation) {
+        this.mutation = mutation;
+    }
+
+    public String getNumberNucleotideSubstitution() {
+        return numberNucleotideSubstitution;
+    }
+
+    public void setNumberNucleotideSubstitution(String numberNucleotideSubstitution) {
+        this.numberNucleotideSubstitution = numberNucleotideSubstitution;
+    }
+
+    public Double getNumberSomaticMutationsCosmic() {
+        return numberSomaticMutationsCosmic;
+    }
+
+    public void setNumberSomaticMutationsCosmic(Double numberSomaticMutationsCosmic) {
+        this.numberSomaticMutationsCosmic = numberSomaticMutationsCosmic;
+    }
+
+    public Double getNumberSomaticMutationsTcga() {
+        return numberSomaticMutationsTcga;
+    }
+
+    public void setNumberSomaticMutationsTcga(Double numberSomaticMutationsTcga) {
+        this.numberSomaticMutationsTcga = numberSomaticMutationsTcga;
+    }
+
+    public Double getNumberSomaticMutationsGenie() {
+        return numberSomaticMutationsGenie;
+    }
+
+    public void setNumberSomaticMutationsGenie(Double numberSomaticMutationsGenie) {
+        this.numberSomaticMutationsGenie = numberSomaticMutationsGenie;
+    }
+
+    public Double getNumbergermlineMutationsExac() {
+        return numbergermlineMutationsExac;
+    }
+
+    public void setNumbergermlineMutationsExac(Double numbergermlineMutationsExac) {
+        this.numbergermlineMutationsExac = numbergermlineMutationsExac;
     }
 
     /**
