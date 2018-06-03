@@ -31,7 +31,8 @@
 
 <body>
 <div class="dude">
-    dude
+    dude<br/>
+    ${resp}
 </div>
 <div class="chart" id="chart">
 
@@ -136,7 +137,7 @@
             .attr("r", 5)
             .attr("fill", function() { return color(d3.select(this.parentNode).datum().key); });
 
-    var data2 = [{key: "group1", points: [{label: "point1", x: 15, y:27}]}, {key: "group2", points: [{label: "point2", x: 10, y:29}]}];
+    var data2 = [{points: [{label: "multi", x: 15, y:27}]}, {key: "group2", points: [{label: "single", x: 10, y:29}]}];
 
 
     var scatterPlotGroupsGreen= scatterChartContainer.selectAll(".scatterPlotGroupGreen")
@@ -149,10 +150,10 @@
             .enter().append("circle")
             .attr("cx", function(d) { return scatterChartXScale(d.x); })
             .attr("cy", function(d) { return scatterChartYScale(d.y); })
-            .attr("r", 3)
-            .attr("stroke", "green")
-            .attr("stroke-width", "3px")
-            .attr("fill", "white");
+            .attr("r", function(d) { return (d.label == 'multi' ? 4 : 2); })
+            .attr("stroke", function(d) { return (d.label == 'multi' ? "green" : "red"); })
+            .attr("stroke-width", function(d) { return (d.label == 'multi' ? "3px" : "2px"); })
+            .attr("fill", function(d) { return (d.label == 'multi' ? "white" : "red"); });
 
 </script>
 </body>
