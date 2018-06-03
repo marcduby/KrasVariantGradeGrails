@@ -33,93 +33,126 @@
 <div class="dude">
     dude
 </div>
-<div class="chart">
+<div class="chart" id="chart">
 
 </div>
 
 <script type="text/javascript">
-    var margin = {top: 70, right: 20, bottom: 30, left: 50},
-            w = 400 - margin.left - margin.right,
-            h = 400 - margin.top - margin.bottom;
+    var data = [{
+        key: "group1",
+        x: [10, 20],
+        y: [10, 30],
+        label: ["point1", "point2"]
+    }, {
+        key: "group2",
+        x: [5, 10, 25],
+        y: [20, 25, 15],
+        label: ["point3", "point4", "point5"]
+    }];
 
-    //    var parseDate = d3.time.format("%d-%b-%y").parse;
+    var width = 700;
+    var height = 500;
+    var scatterPlotMargin = {
+        top: 90,
+        right: 150,
+        bottom: 20,
+        left: 50
+    };
+    var color = d3.scale.category10();
 
-    //    var x = d3.time.scale().range([0, w]);
-    var x = d3.scale.linear().range([0, w]);
-    var y = d3.scale.linear().range([h, 0]);
+    var svg = d3.select("#chart")
+            .append("svg")
+            .style("width", width)
+            .style("height", height);
 
-    x.domain([-8, 4]);
-    y.domain([0, 0.6]);
+    var scatterChartContainer = svg.append("g")
+            .attr('class', 'scatterCharts')
+            .attr("transform", "translate(" + scatterPlotMargin.left + "," + scatterPlotMargin.top + ")");
 
-    var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom")
-            .ticks(5);
+    var scatterChartXScale = d3.scale.linear()
+            .range([0, width - scatterPlotMargin.left - scatterPlotMargin.right])
+            .domain([
+                d3.min(data.map(function(d) {
+                    return d3.min(d.x) * 0.8;
+                })),
+                d3.max(data.map(function(d) {
+                    return d3.max(d.x) * 1.2;
+                }))
+            ]);
+
+    var scatterChartYScale = d3.scale.linear()
+            .range([height - scatterPlotMargin.top - scatterPlotMargin.bottom, 0])
+            .domain([
+                d3.min(data.map(function(d) {
+                    return d3.min(d.y) * 0.8;
+                })),
+                d3.max(data.map(function(d) {
+                    return d3.max(d.y) * 1.2;
+                }))
+            ]);
 
     var yAxis = d3.svg.axis()
-            .scale(y)
+            .scale(scatterChartYScale)
             .orient("left")
+            .innerTickSize(-(width - scatterPlotMargin.left - scatterPlotMargin.right)) //Add some horizontal grid
             .ticks(5);
 
-    var svg = d3.select("div.chart").append("svg")
-            .attr("width", w + margin.left + margin.right)
-            .attr("height", h + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + h + ")")
-            .call(xAxis);
-
-    svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis);
-
-
-    //    d3.csv("${g.resource(file:'data_01.csv')}", function(error, data) {
-    d3.csv("${g.resource(file:'deleterious.csv')}", function(error, data) {
-        // Here we will put all the SVG elements affected by the data
-        // on the file!!!
-        data.forEach(function(d) {
-            d.score = +d.score;
-            d.frequency = +d.frequency;
-        });
-
-//        x.domain(d3.extent(data, function(d) { return d.score; }));
-//        y.domain(d3.extent(data, function(d) { return d.frequency; }));
-
-        var line = d3.svg.line()
-                .x(function(d) { return x(d.score); })
-                .y(function(d) { return y(d.frequency); });
-
-        svg.append("g").append("svg:path").attr("d", line(data)).attr("class", "red");
-
-        svg.select('path.red').attr("stroke", "red");
+    // restructure the data to make life easier
+    data = data.map(function(d) {
+        return {
+            key: d.key,
+            points: d.label.map(function (l, i) {
+                return {
+                    label: l,
+                    x: d.x[i],
+                    y: d.y[i]
+                };
+            })
+        };
     });
 
-    
+    scatterChartContainer.append("g")
+            .attr("class", "scatterPlot y axis")
+            .attr("transform", "translate(" + 0 + ",0)")
+            //.attr("opacity",0.5)
+            .style({
+                'stroke': 'black',
+                'fill': 'none',
+                'stroke-width': '1px',
+                'opacity': 0.5
+            })
+            .call(yAxis);
+
+    var scatterPlotGroups = scatterChartContainer.selectAll(".scatterPlotGroup")
+            .data(data)
+            .enter().append("g")
+            .attr("class", "scatterPlotGroup");
+
+    var scatterPlotCircles = scatterPlotGroups.selectAll("circle")
+            .data(function(d) { return d.points; })
+            .enter().append("circle")
+            .attr("cx", function(d) { return scatterChartXScale(d.x); })
+            .attr("cy", function(d) { return scatterChartYScale(d.y); })
+            .attr("r", 5)
+            .attr("fill", function() { return color(d3.select(this.parentNode).datum().key); });
+
+    var data2 = [{key: "group1", points: [{label: "point1", x: 15, y:27}]}, {key: "group2", points: [{label: "point2", x: 10, y:29}]}];
 
 
-    %{--d3.csv("${g.resource(file:'benign.csv')}", function(error, data) {--}%
-        %{--// Here we will put all the SVG elements affected by the data--}%
-        %{--// on the file!!!--}%
-        %{--data.forEach(function(d) {--}%
-            %{--d.score = +d.score;--}%
-            %{--d.frequency = +d.frequency;--}%
-        %{--});--}%
+    var scatterPlotGroupsGreen= scatterChartContainer.selectAll(".scatterPlotGroupGreen")
+            .data(data2)
+            .enter().append("g")
+            .attr("class", "scatterPlotGroupGreen");
 
-%{--//        x.domain(d3.extent(data, function(d) { return d.score; }));--}%
-%{--//        y.domain(d3.extent(data, function(d) { return d.frequency; }));--}%
-
-        %{--var line = d3.svg.line()--}%
-                %{--.x(function(d) { return x(d.score); })--}%
-                %{--.y(function(d) { return y(d.frequency); });--}%
-
-        %{--svg.append("g").append("svg:path").attr("d", line(data)).attr("class", "green");--}%
-
-        %{--svg.selectAll('path.green').attr("stroke", "green");--}%
-    %{--});--}%
+    var scatterPlotCirclesGreen = scatterPlotGroupsGreen.selectAll("circle")
+            .data(function(d) { return d.points; })
+            .enter().append("circle")
+            .attr("cx", function(d) { return scatterChartXScale(d.x); })
+            .attr("cy", function(d) { return scatterChartYScale(d.y); })
+            .attr("r", 3)
+            .attr("stroke", "green")
+            .attr("stroke-width", "3px")
+            .attr("fill", "white");
 
 </script>
 </body>
