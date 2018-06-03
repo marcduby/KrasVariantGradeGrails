@@ -202,7 +202,7 @@ public class KrasMatrixParser {
     public List<KrasPLotBean> buildPlotBeanList(List<KrasDataBean> beanList) {
         // local variables
         List<KrasPLotBean> returnList = new ArrayList<KrasPLotBean>();
-        int max = 10;
+        int max = 10000;
 
         // loop
         for (int i = 0; i < beanList.size(); i++) {

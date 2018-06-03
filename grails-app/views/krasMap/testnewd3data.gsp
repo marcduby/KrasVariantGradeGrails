@@ -30,26 +30,23 @@
 </head>
 
 <body>
-<div class="dude">
-    dude<br/>
-    ${resp}
-</div>
-<div class="comments" data-comments="${resp.encodeAsJSON()}">
-    <div class="chart" id="chart">
-
+<g:if test="${false}">
+    <div class="dude">
+        dude<br/>
+        ${resp}
     </div>
+</g:if>
+
+<div class="chart" id="chart">
+
+</div>
 
     <script type="text/javascript">
         var data = [{
             key: "group1",
-            x: [10, 20],
-            y: [10, 30],
+            x: [-1, 5],
+            y: [-8, 10],
             label: ["point1", "point2"]
-        }, {
-            key: "group2",
-            x: [5, 10, 25],
-            y: [20, 25, 15],
-            label: ["point3", "point4", "point5"]
         }];
 
         var width = 700;
@@ -76,10 +73,10 @@
                 .range([0, width - scatterPlotMargin.left - scatterPlotMargin.right])
                 .domain([
                     d3.min(data.map(function(d) {
-                        return d3.min(d.x) * 0.8;
+                        return d3.min(d.x);
                     })),
                     d3.max(data.map(function(d) {
-                        return d3.max(d.x) * 1.2;
+                        return d3.max(d.x);
                     }))
                 ]);
 
@@ -87,10 +84,10 @@
                 .range([height - scatterPlotMargin.top - scatterPlotMargin.bottom, 0])
                 .domain([
                     d3.min(data.map(function(d) {
-                        return d3.min(d.y) * 0.8;
+                        return d3.min(d.y);
                     })),
                     d3.max(data.map(function(d) {
-                        return d3.max(d.y) * 1.2;
+                        return d3.max(d.y);
                     }))
                 ]);
 
@@ -101,18 +98,18 @@
                 .ticks(5);
 
         // restructure the data to make life easier
-        data = data.map(function(d) {
-            return {
-                key: d.key,
-                points: d.label.map(function (l, i) {
-                    return {
-                        label: l,
-                        x: d.x[i],
-                        y: d.y[i]
-                    };
-                })
-            };
-        });
+//        data = data.map(function(d) {
+//            return {
+//                key: d.key,
+//                points: d.label.map(function (l, i) {
+//                    return {
+//                        label: l,
+//                        x: d.x[i],
+//                        y: d.y[i]
+//                    };
+//                })
+//            };
+//        });
 
         scatterChartContainer.append("g")
                 .attr("class", "scatterPlot y axis")
@@ -126,18 +123,18 @@
                 })
                 .call(yAxis);
 
-        var scatterPlotGroups = scatterChartContainer.selectAll(".scatterPlotGroup")
-                .data(data)
-                .enter().append("g")
-                .attr("class", "scatterPlotGroup");
-
-        var scatterPlotCircles = scatterPlotGroups.selectAll("circle")
-                .data(function(d) { return d.points; })
-                .enter().append("circle")
-                .attr("cx", function(d) { return scatterChartXScale(d.x); })
-                .attr("cy", function(d) { return scatterChartYScale(d.y); })
-                .attr("r", 5)
-                .attr("fill", function() { return color(d3.select(this.parentNode).datum().key); });
+//        var scatterPlotGroups = scatterChartContainer.selectAll(".scatterPlotGroup")
+//                .data(data)
+//                .enter().append("g")
+//                .attr("class", "scatterPlotGroup");
+//
+//        var scatterPlotCircles = scatterPlotGroups.selectAll("circle")
+//                .data(function(d) { return d.points; })
+//                .enter().append("circle")
+//                .attr("cx", function(d) { return scatterChartXScale(d.x); })
+//                .attr("cy", function(d) { return scatterChartYScale(d.y); })
+//                .attr("r", 5)
+//                .attr("fill", function() { return color(d3.select(this.parentNode).datum().key); });
 
         <g:if test="${resp}">
         var data2 = [<g:applyCodec encodeAs="none">${resp}</g:applyCodec>];
@@ -155,12 +152,12 @@
         var scatterPlotCirclesGreen = scatterPlotGroupsGreen.selectAll("circle")
                 .data(function(d) { return d.points; })
                 .enter().append("circle")
-                .attr("cx", function(d) { return scatterChartXScale(d.x + 20); })
-                .attr("cy", function(d) { return scatterChartYScale(d.y + 20); })
+                .attr("cx", function(d) { return scatterChartXScale(d.x); })
+                .attr("cy", function(d) { return scatterChartYScale(d.y); })
                 .attr("r", function(d) { return (d.label == 1 ? 4 : 2); })
-                .attr("stroke", function(d) { return (d.label == 1 ? "green" : "red"); })
+                .attr("stroke", function(d) { return (d.label == 1 ? "green" : "blue"); })
                 .attr("stroke-width", function(d) { return (d.label == 1 ? "3px" : "2px"); })
-                .attr("fill", function(d) { return (d.label == 1 ? "white" : "red"); });
+                .attr("fill", function(d) { return (d.label == 1 ? "white" : "blue"); });
 
     </script>
 </body>
