@@ -67,6 +67,11 @@ class KrasMapController {
         render(view: "testd3")
     }
 
+    def chartnew() {
+        log.info("in chart test new")
+        render(view: "testnewd3a")
+    }
+
     def proteinSearch() {
         // check that logged in
         if (!session.user) {
