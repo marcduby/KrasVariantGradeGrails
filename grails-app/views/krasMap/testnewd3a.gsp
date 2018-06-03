@@ -60,6 +60,7 @@
         bottom: 20,
         left: 50
     };
+
     var color = d3.scale.category10();
 
     var svg = d3.select("#chart")
