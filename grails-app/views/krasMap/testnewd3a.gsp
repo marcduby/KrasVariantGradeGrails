@@ -139,10 +139,10 @@
             .attr("fill", function() { return color(d3.select(this.parentNode).datum().key); });
 
     <g:if test="${resp}">
-    var data2 = eval($('.comments').attr('data-comments'));
+    var data2 = [<g:applyCodec encodeAs="none">${resp}</g:applyCodec>];
     </g:if>
     <g:else>
-    var data2 = [{points: [{label: "Multiple", x: 3, y:4}]}, {key: "group2", points: [{label: "Single", x: 4, y:3}]}];
+    var data2 = [{points: [{label: "Multiple", x: 17, y:22}, {label: "Single", x: 22, y:27}]}];
     </g:else>
 
 
@@ -154,12 +154,12 @@
     var scatterPlotCirclesGreen = scatterPlotGroupsGreen.selectAll("circle")
             .data(function(d) { return d.points; })
             .enter().append("circle")
-            .attr("cx", function(d) { return scatterChartXScale(d.x); })
-            .attr("cy", function(d) { return scatterChartYScale(d.y); })
-            .attr("r", function(d) { return (d.label == 'Multiple' ? 4 : 2); })
-            .attr("stroke", function(d) { return (d.label == 'Multiple' ? "green" : "red"); })
-            .attr("stroke-width", function(d) { return (d.label == 'Multiple' ? "3px" : "2px"); })
-            .attr("fill", function(d) { return (d.label == 'Multiple' ? "white" : "red"); });
+            .attr("cx", function(d) { return scatterChartXScale(d.x + 20); })
+            .attr("cy", function(d) { return scatterChartYScale(d.y + 20); })
+            .attr("r", function(d) { return (d.label == 1 ? 4 : 2); })
+            .attr("stroke", function(d) { return (d.label == 1 ? "green" : "red"); })
+            .attr("stroke-width", function(d) { return (d.label == 1 ? "3px" : "2px"); })
+            .attr("fill", function(d) { return (d.label == 1 ? "white" : "red"); });
 
 </script>
 </body>

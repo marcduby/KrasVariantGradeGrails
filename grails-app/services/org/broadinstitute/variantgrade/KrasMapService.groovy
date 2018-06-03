@@ -72,7 +72,7 @@ class KrasMapService {
             def bean = [:]
             bean.x = krasPLotBean.coslog
             bean.y = krasPLotBean.score
-            bean.label = krasPLotBean.numnuc
+            bean.label = (krasPLotBean.numnuc?.equals("Multiple") ? 1 : 0)
             resp.points << bean
         }
 

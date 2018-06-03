@@ -78,7 +78,7 @@ class KrasMapController {
 
         String myResp = (plotData as JSON).toString()
 
-        render(view: "testnewd3a", model:[resp: plotData])
+        render(view: "testnewd3a", model:[resp: myResp])
 
     }
 
