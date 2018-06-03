@@ -12,6 +12,7 @@ import org.broadinstitute.variantgrade.bean.OddsRatioBean;
 import org.broadinstitute.variantgrade.bean.PositionMatrixBean;
 import org.broadinstitute.variantgrade.data.load.kras.KrasDataBean;
 import org.broadinstitute.variantgrade.data.load.kras.KrasMatrixBuilder;
+import org.broadinstitute.variantgrade.data.load.kras.KrasPLotBean;
 import org.broadinstitute.variantgrade.translator.SearchInputTranslator;
 import org.broadinstitute.variantgrade.util.GradeException;
 
@@ -43,9 +44,14 @@ public class KrasMatrixParser {
     private Map<String, AminoAcidBean> proteinMapKeyedOnOneLetterCode = null;
     private Map<String, AminoAcidBean> proteinMapKeyedOnThreeLetterCode = null;
     private Map<Integer, OddsRatioBean> oddsRationOtionMap = null;
+
     // constants to build maps
     private final String[] codonArray = new String[]{"t", "c", "a", "g"};
     private final String proteinString = "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+
+    // KRAS beans for plots
+    private List<KrasDataBean> krasDataBeanList = null;
+    private List<KrasPLotBean> krasPLotBeanList = null;
 
     // singleton variable
     private static KrasMatrixParser matrixParser;
@@ -179,12 +185,64 @@ public class KrasMatrixParser {
             // get the matrix builder
             KrasMatrixBuilder krasMatrixBuilder = new KrasMatrixBuilder();
 
-            // get the maps of heat maps
-            this.heatMapBeanMap = krasMatrixBuilder.loadHeatMaps(inputStream);
+            // get the list of data
+            this.krasDataBeanList = krasMatrixBuilder.getDataList(inputStream);
+
+            // set the plot bean
+            this.krasPLotBeanList = this.buildPlotBeanList(this.krasDataBeanList);
+
+            // get the maps of heat maps from the list of data
+            this.heatMapBeanMap = krasMatrixBuilder.loadHeatMaps(this.krasDataBeanList);
 
             // set initialization
             this.isInitialized = true;
         }
+    }
+
+    public List<KrasPLotBean> buildPlotBeanList(List<KrasDataBean> beanList) {
+        // local variables
+        List<KrasPLotBean> returnList = new ArrayList<KrasPLotBean>();
+        int max = 100;
+
+        // loop
+        for (int i = 0; i < beanList.size(); i++) {
+            KrasDataBean krasDataBean = beanList.get(i);
+
+            // create a new plot bean
+            KrasPLotBean krasPLotBean = new KrasPLotBean();
+            Double log = Math.log10(krasDataBean.getCosmicCancerIncidence());
+            krasPLotBean.setCoslog((log < 0 ? 0.0 : log));
+            krasPLotBean.setNumnuc(krasDataBean.getNumberNucleotideSubstitution());
+            krasPLotBean.setRank(krasDataBean.getRank());
+            krasPLotBean.setScore(krasDataBean.getFunctionalMeanScore());
+
+            // add to list
+            returnList.add(krasPLotBean);
+
+            // test
+            if (i > max) {
+                break;
+            }
+        }
+
+        // return
+        return returnList;
+    }
+
+    /**
+     * return the plot map
+     *
+     * @return
+     */
+    public Map<String, List> getPlotMap() {
+        // local variables
+        Map<String, List> plotMap = new HashMap<String, List>();
+
+        // set list on map
+        plotMap.put("points", this.krasPLotBeanList);
+
+        // return
+        return plotMap;
     }
 
     /**

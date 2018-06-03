@@ -31,13 +31,9 @@ public class KrasMatrixBuilder {
         // instance variables
         Map<String, HeatMapBean> heatMapBeanByTypeMap = null;     // map of types of string to heat maps with data in them
         List<KrasDataBean> krasDataBeanList = null;
-        KrasFlatFileLoader krasFlatFileLoader = null;
-
-        // get the file loader
-        krasFlatFileLoader = new KrasFlatFileLoader(filePath);
 
         // load the file into the bean
-        krasDataBeanList = krasFlatFileLoader.load();
+        krasDataBeanList = this.getDataList(filePath);
         this.loaderLogger.info("Got list of kras objects of size: " + krasDataBeanList.size());
 
         // get the heat maps map
@@ -79,6 +75,28 @@ public class KrasMatrixBuilder {
         // instance variables
         Map<String, HeatMapBean> heatMapBeanByTypeMap = null;     // map of types of string to heat maps with data in them
         List<KrasDataBean> krasDataBeanList = null;
+
+        // load the file into the bean
+        krasDataBeanList = this.getDataList(fileStream);
+        this.loaderLogger.info("Got list of kras objects of size: " + krasDataBeanList.size());
+
+        // get the heat maps map
+        heatMapBeanByTypeMap = this.loadHeatMapFromBeanList(krasDataBeanList);
+
+        // return
+        return heatMapBeanByTypeMap;
+    }
+
+    /**
+     * load the data list from the file stream
+     *
+     * @param fileStream
+     * @return
+     * @throws GradeException
+     */
+    public List<KrasDataBean> getDataList(InputStream fileStream) throws GradeException {
+        // local variables
+        List<KrasDataBean> krasDataBeanList = null;
         KrasFlatFileLoader krasFlatFileLoader = null;
 
         // get the file loader
@@ -86,6 +104,45 @@ public class KrasMatrixBuilder {
 
         // load the file into the bean
         krasDataBeanList = krasFlatFileLoader.load();
+
+        // return
+        return krasDataBeanList;
+    }
+
+    /**
+     * load the data list from the file path
+     *
+     * @param filePath
+     * @return
+     * @throws GradeException
+     */
+    public List<KrasDataBean> getDataList(String filePath) throws GradeException {
+        // local variables
+        List<KrasDataBean> krasDataBeanList = null;
+        KrasFlatFileLoader krasFlatFileLoader = null;
+
+        // get the file loader
+        krasFlatFileLoader = new KrasFlatFileLoader(filePath);
+
+        // load the file into the bean
+        krasDataBeanList = krasFlatFileLoader.load();
+
+        // return
+        return krasDataBeanList;
+    }
+
+    /**
+     * load the heam maps map from the data bean list
+     *
+     * @param krasDataBeanList
+     * @return
+     * @throws GradeException
+     */
+    public Map<String, HeatMapBean> loadHeatMaps(List<KrasDataBean> krasDataBeanList) throws GradeException {
+        // instance variables
+        Map<String, HeatMapBean> heatMapBeanByTypeMap = null;     // map of types of string to heat maps with data in them
+
+        // load the file into the bean
         this.loaderLogger.info("Got list of kras objects of size: " + krasDataBeanList.size());
 
         // get the heat maps map

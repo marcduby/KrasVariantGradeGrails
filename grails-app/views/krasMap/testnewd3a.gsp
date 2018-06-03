@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="grails.converters.JSON" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -34,6 +34,7 @@
     dude<br/>
     ${resp}
 </div>
+<div class="comments" data-comments="${resp.encodeAsJSON()}">
 <div class="chart" id="chart">
 
 </div>
@@ -137,7 +138,12 @@
             .attr("r", 5)
             .attr("fill", function() { return color(d3.select(this.parentNode).datum().key); });
 
-    var data2 = [{points: [{label: "multi", x: 15, y:27}]}, {key: "group2", points: [{label: "single", x: 10, y:29}]}];
+    <g:if test="${resp}">
+    var data2 = eval($('.comments').attr('data-comments'));
+    </g:if>
+    <g:else>
+    var data2 = [{points: [{label: "Multiple", x: 3, y:4}]}, {key: "group2", points: [{label: "Single", x: 4, y:3}]}];
+    </g:else>
 
 
     var scatterPlotGroupsGreen= scatterChartContainer.selectAll(".scatterPlotGroupGreen")
@@ -150,10 +156,10 @@
             .enter().append("circle")
             .attr("cx", function(d) { return scatterChartXScale(d.x); })
             .attr("cy", function(d) { return scatterChartYScale(d.y); })
-            .attr("r", function(d) { return (d.label == 'multi' ? 4 : 2); })
-            .attr("stroke", function(d) { return (d.label == 'multi' ? "green" : "red"); })
-            .attr("stroke-width", function(d) { return (d.label == 'multi' ? "3px" : "2px"); })
-            .attr("fill", function(d) { return (d.label == 'multi' ? "white" : "red"); });
+            .attr("r", function(d) { return (d.label == 'Multiple' ? 4 : 2); })
+            .attr("stroke", function(d) { return (d.label == 'Multiple' ? "green" : "red"); })
+            .attr("stroke-width", function(d) { return (d.label == 'Multiple' ? "3px" : "2px"); })
+            .attr("fill", function(d) { return (d.label == 'Multiple' ? "white" : "red"); });
 
 </script>
 </body>

@@ -1,5 +1,6 @@
 package org.broadinstitute.variantgrade
 
+import grails.converters.JSON
 import org.broadinstitute.variantgrade.result.ProteinResult
 import org.broadinstitute.variantgrade.util.GradeException
 
@@ -71,6 +72,16 @@ class KrasMapController {
         log.info("in chart test new")
         render(view: "testnewd3a")
     }
+
+    def dataLoad() {
+        def plotData = this.krasMapService.getPlotMap();
+
+        String myResp = (plotData as JSON).toString()
+
+        render(view: "testnewd3a", model:[resp: plotData])
+
+    }
+
 
     def proteinSearch() {
         // check that logged in
