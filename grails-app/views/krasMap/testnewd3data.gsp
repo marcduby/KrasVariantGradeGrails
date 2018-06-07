@@ -49,14 +49,16 @@
             label: ["point1", "point2"]
         }];
 
-        var width = 700;
-        var height = 500;
+        var width = 600; //700;
+        var height = 400; //500;
         var scatterPlotMargin = {
             top: 90,
             right: 150,
             bottom: 20,
             left: 50
         };
+        var w = width - scatterPlotMargin.left - scatterPlotMargin.right;
+        var h = height - scatterPlotMargin.top - scatterPlotMargin.bottom;
 
         var color = d3.scale.category10();
 
@@ -94,7 +96,13 @@
         var yAxis = d3.svg.axis()
                 .scale(scatterChartYScale)
                 .orient("left")
-                .innerTickSize(-(width - scatterPlotMargin.left - scatterPlotMargin.right)) //Add some horizontal grid
+                .innerTickSize(-15) //Add some horizontal grid
+                .ticks(5);
+
+        var xAxis = d3.svg.axis()
+                .scale(scatterChartXScale)
+                .orient("bottom")
+                .innerTickSize(-(15))
                 .ticks(5);
 
         // restructure the data to make life easier
@@ -123,7 +131,20 @@
                 })
                 .call(yAxis);
 
-//        var scatterPlotGroups = scatterChartContainer.selectAll(".scatterPlotGroup")
+        scatterChartContainer.append("g")
+                .attr("class", "scatterPlot x axis")
+//                .attr("transform", "translate(" + 0 + ",0)")
+                .attr("transform", "translate(0," + h + ")")
+                //.attr("opacity",0.5)
+                .style({
+                    'stroke': 'black',
+                    'fill': 'none',
+                    'stroke-width': '1px',
+                    'opacity': 0.5
+                })
+                .call(xAxis);
+
+        //        var scatterPlotGroups = scatterChartContainer.selectAll(".scatterPlotGroup")
 //                .data(data)
 //                .enter().append("g")
 //                .attr("class", "scatterPlotGroup");
