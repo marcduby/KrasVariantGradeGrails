@@ -54,8 +54,8 @@
         var scatterPlotMargin = {
             top: 90,
             right: 150,
-            bottom: 20,
-            left: 50
+            bottom: 50,
+            left: 60
         };
         var w = width - scatterPlotMargin.left - scatterPlotMargin.right;
         var h = height - scatterPlotMargin.top - scatterPlotMargin.bottom;
@@ -179,6 +179,28 @@
                 .attr("stroke", function(d) { return (d.label == 1 ? "green" : "blue"); })
                 .attr("stroke-width", function(d) { return (d.label == 1 ? "3px" : "2px"); })
                 .attr("fill", function(d) { return (d.label == 1 ? "white" : "blue"); });
+
+
+        var labels = svg.append("g")
+                .attr("class", "labels");
+
+        labels.append("text")
+                .attr("transform", "translate(0," + (h + 90) + ")")
+                .attr("x", (w/3))
+                .attr("style","font-size:20px;")
+                .attr("dx", "-1.0em")
+                .attr("dy", "2.0em")
+                .text("COSMIC Incidence (log10)");
+
+        labels.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 20)
+                .attr("x", -130)
+                .attr("style","font-size:20px;")
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Functional Score");
+
 
     </script>
 </body>
