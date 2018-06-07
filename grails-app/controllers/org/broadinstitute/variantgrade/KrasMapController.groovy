@@ -11,7 +11,9 @@ class KrasMapController {
     // instance variables
     private String passcode = "broadvariantfunction";
 
-    def index() { }
+    def index() {
+        forward action: 'login'
+    }
 
     def login() {
         String username = params.username;
@@ -159,8 +161,11 @@ class KrasMapController {
             */
         }
 
+        def plotData = this.krasMapService.getPlotMap();
+        String myResp = (plotData as JSON).toString()
+
         // render
-        render(view: 'proteinFormKras', model: [lastQuery: lastQuery, lastPrevalence: lastPrevalence, errorMessage: errorMessage, proteinResult: proteinResult, referenceLetterList: referenceLetterList])
+        render(view: 'proteinFormKras', model: [resp: myResp, lastQuery: lastQuery, lastPrevalence: lastPrevalence, errorMessage: errorMessage, proteinResult: proteinResult, referenceLetterList: referenceLetterList])
 
     }
 }

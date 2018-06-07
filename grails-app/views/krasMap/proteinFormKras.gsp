@@ -266,143 +266,156 @@
 
 <g:if test="${proteinResult != null}">
 
-<script type="text/javascript">
-    var margin = {top: 0, right: 20, bottom: 60, left: 60},
-            w = 600 - margin.left - margin.right,
-            h = 300 - margin.top - margin.bottom;
+    <script type="text/javascript">
+        var data = [{
+            key: "group1",
+            x: [-1, 5],
+            y: [-8, 10],
+            label: ["point1", "point2"]
+        }];
 
-    //    var parseDate = d3.time.format("%d-%b-%y").parse;
+        var width = 600; //700;
+        var height = 400; //500;
+        var scatterPlotMargin = {
+            top: 90,
+            right: 150,
+            bottom: 50,
+            left: 60
+        };
+        var w = width - scatterPlotMargin.left - scatterPlotMargin.right;
+        var h = height - scatterPlotMargin.top - scatterPlotMargin.bottom;
 
-    //    var x = d3.time.scale().range([0, w]);
-    var x = d3.scale.linear().range([0, w]);
-    var y = d3.scale.linear().range([h, 0]);
+        var color = d3.scale.category10();
 
-    x.domain([-2.5, 2.5]);
-    y.domain([0, 2.2]);
+        var svg = d3.select("#lineDiv")
+                .append("svg")
+                .style("width", width)
+                .style("height", height).attr("width", window.innerWidth).attr("height",window.innerHeight);
 
-    var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom")
-            .ticks(5);
+        var scatterChartContainer = svg.append("g")
+                .attr('class', 'scatterCharts')
+                .attr("transform", "translate(" + scatterPlotMargin.left + "," + scatterPlotMargin.top + ")");
 
-    var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left")
-            .ticks(5);
+        var scatterChartXScale = d3.scale.linear()
+                .range([0, width - scatterPlotMargin.left - scatterPlotMargin.right])
+                .domain([
+                    d3.min(data.map(function(d) {
+                        return d3.min(d.x);
+                    })),
+                    d3.max(data.map(function(d) {
+                        return d3.max(d.x);
+                    }))
+                ]);
 
-    var svg = d3.select("div.lineDiv").append("svg")
-            .attr("width", w + margin.left + margin.right)
-            .attr("height", h + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var scatterChartYScale = d3.scale.linear()
+                .range([height - scatterPlotMargin.top - scatterPlotMargin.bottom, 0])
+                .domain([
+                    d3.min(data.map(function(d) {
+                        return d3.min(d.y);
+                    })),
+                    d3.max(data.map(function(d) {
+                        return d3.max(d.y);
+                    }))
+                ]);
 
-    svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + h + ")")
-            .call(xAxis);
+        var yAxis = d3.svg.axis()
+                .scale(scatterChartYScale)
+                .orient("left")
+                .innerTickSize(-15) //Add some horizontal grid
+                .ticks(5);
 
-    svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis);
+        var xAxis = d3.svg.axis()
+                .scale(scatterChartXScale)
+                .orient("bottom")
+                .innerTickSize(-(15))
+                .ticks(5);
 
 
-    //    d3.csv("${g.resource(file:'data_01.csv')}", function(error, data) {
-    d3.csv("${g.resource(file:'nonsenseCancer2.csv')}", function(error, data) {
-        // Here we will put all the SVG elements affected by the data
-        // on the file!!!
-        data.forEach(function(d) {
-            d.score = +d.score;
-            d.frequency = +d.frequency;
-        });
+        scatterChartContainer.append("g")
+                .attr("class", "scatterPlot y axis")
+                .attr("transform", "translate(" + 0 + ",0)")
+                //.attr("opacity",0.5)
+                .style({
+                    'stroke': 'black',
+                    'fill': 'none',
+                    'stroke-width': '1px',
+                    'opacity': 0.5
+                })
+                .call(yAxis);
 
-//        x.domain(d3.extent(data, function(d) { return d.score; }));
-//        y.domain(d3.extent(data, function(d) { return d.frequency; }));
+        scatterChartContainer.append("g")
+                .attr("class", "scatterPlot x axis")
+                //                .attr("transform", "translate(" + 0 + ",0)")
+                .attr("transform", "translate(0," + h + ")")
+                //.attr("opacity",0.5)
+                .style({
+                    'stroke': 'black',
+                    'fill': 'none',
+                    'stroke-width': '1px',
+                    'opacity': 0.5
+                })
+                .call(xAxis);
 
-        var line = d3.svg.line()
-                .x(function(d) { return x(d.score); })
-                .y(function(d) { return y(d.frequency); });
+        //        var scatterPlotGroups = scatterChartContainer.selectAll(".scatterPlotGroup")
+        //                .data(data)
+        //                .enter().append("g")
+        //                .attr("class", "scatterPlotGroup");
+        //
+        //        var scatterPlotCircles = scatterPlotGroups.selectAll("circle")
+        //                .data(function(d) { return d.points; })
+        //                .enter().append("circle")
+        //                .attr("cx", function(d) { return scatterChartXScale(d.x); })
+        //                .attr("cy", function(d) { return scatterChartYScale(d.y); })
+        //                .attr("r", 5)
+        //                .attr("fill", function() { return color(d3.select(this.parentNode).datum().key); });
 
-        svg.append("g").append("svg:path").attr("d", line(data)).attr("class", "red");
+        <g:if test="${resp}">
+        var data2 = [<g:applyCodec encodeAs="none">${resp}</g:applyCodec>];
+        </g:if>
+        <g:else>
+        var data2 = [{points: [{label: "Multiple", x: 17, y:22}, {label: "Single", x: 22, y:27}]}];
+        </g:else>
 
-        svg.select('path.red').attr("stroke", "red");
-    });
 
-    d3.csv("${g.resource(file:'silentCancer2.csv')}", function(error, data) {
-        // Here we will put all the SVG elements affected by the data
-        // on the file!!!
-        data.forEach(function(d) {
-            d.score = +d.score;
-            d.frequency = +d.frequency;
-        });
+        var scatterPlotGroupsGreen= scatterChartContainer.selectAll(".scatterPlotGroupGreen")
+                .data(data2)
+                .enter().append("g")
+                .attr("class", "scatterPlotGroupGreen");
 
-//        x.domain(d3.extent(data, function(d) { return d.score; }));
-//        y.domain(d3.extent(data, function(d) { return d.frequency; }));
+        var scatterPlotCirclesGreen = scatterPlotGroupsGreen.selectAll("circle")
+                .data(function(d) { return d.points; })
+                .enter().append("circle")
+                .attr("cx", function(d) { return scatterChartXScale(d.x); })
+                .attr("cy", function(d) { return scatterChartYScale(d.y); })
+                .attr("r", function(d) { return (d.label == 1 ? 4 : 2); })
+                .attr("stroke", function(d) { return (d.label == 1 ? "green" : "blue"); })
+                .attr("stroke-width", function(d) { return (d.label == 1 ? "3px" : "2px"); })
+                .attr("fill", function(d) { return (d.label == 1 ? "white" : "blue"); });
 
-        var line = d3.svg.line()
-                .x(function(d) { return x(d.score); })
-                .y(function(d) { return y(d.frequency); });
 
-        svg.append("g").append("svg:path").attr("d", line(data)).attr("class", "green");
+        var labels = svg.append("g")
+                .attr("class", "labels");
 
-        svg.selectAll('path.green').attr("stroke", "green");
-    });
+        labels.append("text")
+                .attr("transform", "translate(0," + (h + 90) + ")")
+                .attr("x", (w/3))
+                .attr("style","font-size:20px;")
+                .attr("dx", "-1.0em")
+                .attr("dy", "2.0em")
+                .text("COSMIC Incidence (log10)");
 
-    var scoreData = [{xdata: ${proteinResult.getHeatAmount()}, ydata:0}, {xdata: ${proteinResult.getHeatAmount()}, ydata: 1.8}];
-    var scoreLine = d3.svg.line()
-            .x(function(d) { return x(d.xdata); })
-            .y(function(d) { return y(d.ydata); });
+        labels.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 20)
+                .attr("x", -130)
+                .attr("style","font-size:20px;")
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Functional Score");
 
-    svg.append("g").append("svg:path").attr("d", scoreLine(scoreData)).attr("class", "black");
 
-    svg.selectAll('path.black').attr("stroke", "black");
+    </script>
 
-    svg.append("g").append("svg:text")
-            .attr("x", w * ((${proteinResult.getHeatAmount()} + 2.5)/5))
-            .attr("y", 30)
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("fill", "black")
-            .text('${proteinResult.getScientificAlleleCode()}');
-
-    var labels = svg.append("g")
-            .attr("class", "labels");
-
-    labels.append("text")
-            .attr("transform", "translate(0," + (h + 10) + ")")
-            .attr("x", (w/3))
-            .attr("style","font-size:20px;")
-            .attr("dx", "-1.0em")
-            .attr("dy", "2.0em")
-            .text("combined phenotype score");
-
-    labels.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", -60)
-            .attr("x", -30)
-            .attr("style","font-size:20px;")
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("density known variants");
-
-    labels.append("text")
-            .attr("transform", "translate(0," + (h - 50) + ")")
-            .attr("x", 344)
-            .attr("style","font-size:13px;")
-            .attr("dx", "-1.0em")
-            .attr("dy", "2.0em")
-            .style("stroke", "red")
-            .text("Common Cancer Missense");
-
-    labels.append("text")
-            .attr("transform", "translate(0," + (h - 50) + ")")
-            .attr("x", 225)
-            .attr("style","font-size:13px;")
-            .attr("dx", "-1.0em")
-            .attr("dy", "2.0em")
-            .style("stroke", "green")
-            .text("WT (silent)");
-
-</script>
 </g:if>
 
 <script>
