@@ -371,12 +371,20 @@
 
         <g:if test="${resp}">
         var data2 = [<g:applyCodec encodeAs="none">${resp}</g:applyCodec>];
+
+            <g:if test="${proteinResult}">
+                var dataSelected = [{points: [{label: 1, x: ${proteinResult.getLogNumberSomaticMutationsCosmic()}, y: ${proteinResult.getHeatAmount()}}]}];
+            </g:if>
+            <g:else>
+                var dataSelected = [{points: [{label: 1, x: 3, y: 5}]}];
+            </g:else>
+
         </g:if>
         <g:else>
         var data2 = [{points: [{label: "Multiple", x: 17, y:22}, {label: "Single", x: 22, y:27}]}];
         </g:else>
 
-
+        // plot the multiple/single points
         var scatterPlotGroupsGreen= scatterChartContainer.selectAll(".scatterPlotGroupGreen")
                 .data(data2)
                 .enter().append("g")
@@ -391,6 +399,23 @@
                 .attr("stroke", function(d) { return (d.label == 1 ? "green" : "blue"); })
                 .attr("stroke-width", function(d) { return (d.label == 1 ? "3px" : "2px"); })
                 .attr("fill", function(d) { return (d.label == 1 ? "white" : "blue"); });
+
+
+        // plot the selected point
+        var scatterPlotGroupsRed= scatterChartContainer.selectAll(".scatterPlotGroupRed")
+                .data(dataSelected)
+                .enter().append("g")
+                .attr("class", "scatterPlotGroupRed");
+
+        var scatterPlotCirclesRed = scatterPlotGroupsRed.selectAll("circle")
+                .data(function(d) { return d.points; })
+                .enter().append("circle")
+                .attr("cx", function(d) { return scatterChartXScale(d.x); })
+                .attr("cy", function(d) { return scatterChartYScale(d.y); })
+                .attr("r", 5)
+                .attr("stroke", "red")
+                .attr("stroke-width", "5px")
+                .attr("fill", "white");
 
 
         var labels = svg.append("g")

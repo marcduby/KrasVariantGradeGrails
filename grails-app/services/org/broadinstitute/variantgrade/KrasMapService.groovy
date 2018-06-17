@@ -64,6 +64,9 @@ class KrasMapService {
     }
 
     public Map getPlotMap() {
+        // following is the map data structure being returned for the point plot
+//        var data2 = [{points: [{label: "Multiple", x: 17, y:22}, {label: "Single", x: 22, y:27}]}];
+
         def resp = [:]
         resp.points = []
         List<KrasPLotBean> krasDataBeanList = this.getMatrixParser().getPlotMap().get("points");

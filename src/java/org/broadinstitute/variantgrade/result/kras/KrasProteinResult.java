@@ -377,6 +377,14 @@ public class KrasProteinResult extends ProteinResult {
         return numberSomaticMutationsCosmic;
     }
 
+    public Double getLogNumberSomaticMutationsCosmic() {
+        Double log = Math.log10(numberSomaticMutationsCosmic);
+        if (log < 0) {
+            log = 0.0;
+        }
+        return log;
+    }
+
     public void setNumberSomaticMutationsCosmic(Double numberSomaticMutationsCosmic) {
         this.numberSomaticMutationsCosmic = numberSomaticMutationsCosmic;
     }
