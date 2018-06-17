@@ -206,7 +206,7 @@
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td>Protein change <a href="#" title="Numbering with respect to p53 isoform a"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td>Protein change <a href="#" title="Numbering with respect to KRAS isoform a"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td>${proteinResult.getScientificAlleleCode()}</td>
                                         </tr>
 
@@ -275,9 +275,9 @@
         }];
 
         var width = 600; //700;
-        var height = 400; //500;
+        var height = 330; //500;
         var scatterPlotMargin = {
-            top: 90,
+            top: 20,
             right: 150,
             bottom: 50,
             left: 60
@@ -422,7 +422,7 @@
                 .attr("class", "labels");
 
         labels.append("text")
-                .attr("transform", "translate(0," + (h + 90) + ")")
+                .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
                 .attr("x", (w/3))
                 .attr("style","font-size:20px;")
                 .attr("dx", "-1.0em")
@@ -437,6 +437,33 @@
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
                 .text("Functional Score");
+
+        labels.append("text")
+                .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
+                .attr("x", (w/3))
+                .attr("style","font-size:15px;")
+                .attr("dx", "8.0em")
+                .attr("dy", "-3.0em")
+                .style("stroke", "green")
+                .text("Multiple nucleotide substitution");
+
+        labels.append("text")
+                .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
+                .attr("x", (w/3))
+                .attr("style","font-size:15px;")
+                .attr("dx", "8.0em")
+                .attr("dy", "-1.5em")
+                .style("stroke", "blue")
+                .text("Single nucleotide substitution");
+
+        labels.append("text")
+                .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
+                .attr("x", (w/3))
+                .attr("style","font-size:15px;")
+                .attr("dx", "8.0em")
+                .attr("dy", "-4.5em")
+                .style("stroke", "red")
+                .text("${proteinResult.getScientificAlleleCode()}");
 
 
     </script>
