@@ -432,7 +432,7 @@
         labels.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 20)
-                .attr("x", -130)
+                .attr("x", -90)
                 .attr("style","font-size:20px;")
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
