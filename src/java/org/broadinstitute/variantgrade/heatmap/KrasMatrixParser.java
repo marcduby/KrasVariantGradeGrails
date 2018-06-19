@@ -211,6 +211,12 @@ public class KrasMatrixParser {
             // create a new plot bean
             KrasPLotBean krasPLotBean = new KrasPLotBean();
             Double log = Math.log10(krasDataBean.getCosmicCancerIncidence());
+
+            // skip if log negative
+            if (log < 0) {
+                continue;
+            }
+
             krasPLotBean.setCoslog((log < 0 ? 0.0 : log));
             krasPLotBean.setNumnuc(krasDataBean.getNumberNucleotideSubstitution());
             krasPLotBean.setRank(krasDataBean.getRank());

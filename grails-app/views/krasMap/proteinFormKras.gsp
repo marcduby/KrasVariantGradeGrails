@@ -121,7 +121,7 @@
             <div class="col-md-12">
                 <g:form name="myForm" action="proteinSearch" id="1">
                     <div class="formWrapper">
-                        <div class="description">The classifier provides functional classification for any missense and nonsense variant using comprehensive experimental data. It currently supports functional classification for missense and nonsense variants in the gene <span class="miterItalic">KRAS</span>.
+                        <div class="description">The classifier provides functional classification for any missense variant using comprehensive experimental data. It currently supports functional classification for missense variants in the gene <span class="miterItalic">KRAS</span>.
                         <br/>See <a href="https://www.nature.com/ng/" target="newWindow">paper link</a> for details.</div>
                         <div class="apptitle-black description">KRAS</div>
                         <p class="bold-text">Enter Variant</p>
@@ -217,7 +217,7 @@
 
                                         <tr class="tightrow">
                                             <td>Experimental function score  <a href="#" title="Also referred to as combined phenotype score in Ly et al. 2018"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
-                                            <td><g:formatNumber number="${proteinResult.getHeatAmount()}" type="number" maxFractionDigits="3" /> &#177; <g:formatNumber number="${proteinResult.getHeatAmountStandardDeviation()}" type="number" maxFractionDigits="3" /></td>
+                                            <td><g:formatNumber number="${proteinResult.getHeatAmount()}" type="number" maxFractionDigits="3" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
@@ -370,18 +370,10 @@
         //                .attr("fill", function() { return color(d3.select(this.parentNode).datum().key); });
 
         <g:if test="${resp}">
-        var data2 = [<g:applyCodec encodeAs="none">${resp}</g:applyCodec>];
-
-            <g:if test="${proteinResult}">
-                var dataSelected = [{points: [{label: 1, x: ${proteinResult.getLogNumberSomaticMutationsCosmic()}, y: ${proteinResult.getHeatAmount()}}]}];
-            </g:if>
-            <g:else>
-                var dataSelected = [{points: [{label: 1, x: 3, y: 5}]}];
-            </g:else>
-
+            var data2 = [<g:applyCodec encodeAs="none">${resp}</g:applyCodec>];
         </g:if>
         <g:else>
-        var data2 = [{points: [{label: "Multiple", x: 17, y:22}, {label: "Single", x: 22, y:27}]}];
+            var data2 = [{points: [{label: "Multiple", x: 17, y:22}, {label: "Single", x: 22, y:27}]}];
         </g:else>
 
         // plot the multiple/single points
@@ -402,6 +394,9 @@
 
 
         // plot the selected point
+        <g:if test="${proteinResult.getLogNumberSomaticMutationsCosmic() >= 0}">
+            var dataSelected = [{points: [{label: 1, x: ${proteinResult.getLogNumberSomaticMutationsCosmic()}, y: ${proteinResult.getHeatAmount()}}]}];
+
         var scatterPlotGroupsRed= scatterChartContainer.selectAll(".scatterPlotGroupRed")
                 .data(dataSelected)
                 .enter().append("g")
@@ -416,7 +411,7 @@
                 .attr("stroke", "red")
                 .attr("stroke-width", "5px")
                 .attr("fill", "white");
-
+        </g:if>
 
         var labels = svg.append("g")
                 .attr("class", "labels");

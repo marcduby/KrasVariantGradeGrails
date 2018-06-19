@@ -9,7 +9,9 @@ class HeatMapController {
     // instance variables
     private String passcode = "broadvariantfunction";
 
-    def index() { }
+    def index() {
+        forward action: 'login'
+    }
 
     def login() {
         String username = params.username;

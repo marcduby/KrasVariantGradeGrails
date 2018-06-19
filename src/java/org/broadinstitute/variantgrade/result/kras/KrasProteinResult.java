@@ -380,7 +380,7 @@ public class KrasProteinResult extends ProteinResult {
     public Double getLogNumberSomaticMutationsCosmic() {
         Double log = Math.log10(numberSomaticMutationsCosmic);
         if (log < 0) {
-            log = 0.0;
+            log = -1.0;
         }
         return log;
     }
