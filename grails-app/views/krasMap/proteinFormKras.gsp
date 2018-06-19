@@ -275,16 +275,35 @@
             label: ["point1", "point2"]
         }];
 
+        var dataRankScale = [{
+            key: "rank",
+            x: [0, 4000],
+            y: [-8, 10],
+            label: ["point1", "point2"]
+        }];
+
         var width = 700; //700;
         var height = 330; //500;
+
+        // this is for the COSMIC chart
         var scatterPlotMargin = {
             top: 20,
-            right: 30,
+            right: 20,
             bottom: 50,
-            left: 340
+            left: 350
         };
         var w = width - scatterPlotMargin.left - scatterPlotMargin.right;
         var h = height - scatterPlotMargin.top - scatterPlotMargin.bottom;
+
+        // this is for the rank chart
+        var rankPlotMargin = {
+            top: 20,
+            right: 410,
+            bottom: 50,
+            left: 40
+        };
+        var wRank = width - rankPlotMargin.left - rankPlotMargin.right;
+        var hRank = height - rankPlotMargin.top - rankPlotMargin.bottom;
 
         var color = d3.scale.category10();
 
@@ -293,6 +312,7 @@
                 .style("width", width)
                 .style("height", height).attr("width", window.innerWidth).attr("height",window.innerHeight);
 
+        // COSMIC plot
         var scatterChartContainer = svg.append("g")
                 .attr('class', 'scatterCharts')
                 .attr("transform", "translate(" + scatterPlotMargin.left + "," + scatterPlotMargin.top + ")");
@@ -357,6 +377,71 @@
                 })
                 .call(xAxis);
 
+        // Rank plot
+        var rankChartContainer = svg.append("g")
+                .attr('class', 'scatterChartsRank')
+                .attr("transform", "translate(" + rankPlotMargin.left + "," + rankPlotMargin.top + ")");
+
+        var rankChartXScale = d3.scale.linear()
+                .range([0, width - rankPlotMargin.left - rankPlotMargin.right])
+                .domain([
+                    d3.min(dataRankScale.map(function(d) {
+                        return d3.min(d.x);
+                    })),
+                    d3.max(dataRankScale.map(function(d) {
+                        return d3.max(d.x);
+                    }))
+                ]);
+
+        var rankChartYScale = d3.scale.linear()
+                .range([height - rankPlotMargin.top - rankPlotMargin.bottom, 0])
+                .domain([
+                    d3.min(dataRankScale.map(function(d) {
+                        return d3.min(d.y);
+                    })),
+                    d3.max(dataRankScale.map(function(d) {
+                        return d3.max(d.y);
+                    }))
+                ]);
+
+        var yAxisRank = d3.svg.axis()
+                .scale(rankChartYScale)
+                .orient("left")
+                .innerTickSize(-15) //Add some horizontal grid
+                .ticks(5);
+
+        var xAxisRank = d3.svg.axis()
+                .scale(rankChartXScale)
+                .orient("bottom")
+                .innerTickSize(-(15))
+                .ticks(5);
+
+
+        rankChartContainer.append("g")
+                .attr("class", "scatterChartsRank y axis")
+                .attr("transform", "translate(" + 0 + ",0)")
+                //.attr("opacity",0.5)
+                .style({
+                    'stroke': 'black',
+                    'fill': 'none',
+                    'stroke-width': '1px',
+                    'opacity': 0.5
+                })
+                .call(yAxisRank);
+
+        rankChartContainer.append("g")
+                .attr("class", "scatterChartsRank x axis")
+                //                .attr("transform", "translate(" + 0 + ",0)")
+                .attr("transform", "translate(0," + h + ")")
+                //.attr("opacity",0.5)
+                .style({
+                    'stroke': 'black',
+                    'fill': 'none',
+                    'stroke-width': '1px',
+                    'opacity': 0.5
+                })
+                .call(xAxisRank);
+
         //        var scatterPlotGroups = scatterChartContainer.selectAll(".scatterPlotGroup")
         //                .data(data)
         //                .enter().append("g")
@@ -414,9 +499,11 @@
                 .attr("fill", "white");
         </g:if>
 
+
         var labels = svg.append("g")
                 .attr("class", "labels");
 
+        // COSMIC labels
         labels.append("text")
                 .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
                 .attr("x", scatterPlotMargin.left + (w/3))
@@ -458,6 +545,23 @@
                 .style("stroke", "red")
                 .text("${proteinResult.getScientificAlleleCode()}");
 
+        // Rank labels
+        labels.append("text")
+                .attr("transform", "translate(0," + (h + rankPlotMargin.top) + ")")
+                .attr("x", rankPlotMargin.left + (wRank/2))
+                .attr("style","font-size:20px;")
+                .attr("dx", "-1.0em")
+                .attr("dy", "2.0em")
+                .text("Rank");
+
+        labels.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", rankPlotMargin.left - 40)
+                .attr("x", -90)
+                .attr("style","font-size:20px;")
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Functional Score");
 
     </script>
 
