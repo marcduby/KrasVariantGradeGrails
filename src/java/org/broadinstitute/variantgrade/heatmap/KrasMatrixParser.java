@@ -217,7 +217,7 @@ public class KrasMatrixParser {
                 continue;
             }
 
-            krasPLotBean.setCoslog((log < 0 ? 0.0 : log));
+            krasPLotBean.setCoslog(log);
             krasPLotBean.setNumnuc(krasDataBean.getNumberNucleotideSubstitution());
             krasPLotBean.setRank(krasDataBean.getRank());
             krasPLotBean.setScore(krasDataBean.getFunctionalMeanScore());

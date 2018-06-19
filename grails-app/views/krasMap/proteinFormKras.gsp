@@ -60,7 +60,8 @@
 
     #page-body {
 /*        margin: 2em 1em 1.25em 18em; */
-        margin: 1em 10em 1em 10em;
+/*        margin: 1em 10em 1em 10em;    */
+        margin: 1em 7em 1em 7em;
     }
 
     h2 {
@@ -274,13 +275,13 @@
             label: ["point1", "point2"]
         }];
 
-        var width = 600; //700;
+        var width = 700; //700;
         var height = 330; //500;
         var scatterPlotMargin = {
             top: 20,
-            right: 150,
+            right: 30,
             bottom: 50,
-            left: 60
+            left: 340
         };
         var w = width - scatterPlotMargin.left - scatterPlotMargin.right;
         var h = height - scatterPlotMargin.top - scatterPlotMargin.bottom;
@@ -418,7 +419,7 @@
 
         labels.append("text")
                 .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
-                .attr("x", (w/3))
+                .attr("x", scatterPlotMargin.left + (w/3))
                 .attr("style","font-size:20px;")
                 .attr("dx", "-1.0em")
                 .attr("dy", "2.0em")
@@ -426,7 +427,7 @@
 
         labels.append("text")
                 .attr("transform", "rotate(-90)")
-                .attr("y", 20)
+                .attr("y", scatterPlotMargin.left - 40)
                 .attr("x", -90)
                 .attr("style","font-size:20px;")
                 .attr("dy", ".71em")
@@ -435,27 +436,24 @@
 
         labels.append("text")
                 .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
-                .attr("x", (w/3))
+                .attr("x", scatterPlotMargin.left + (w/3))
                 .attr("style","font-size:15px;")
-                .attr("dx", "8.0em")
                 .attr("dy", "-3.0em")
                 .style("stroke", "green")
                 .text("Multiple nucleotide substitution");
 
         labels.append("text")
                 .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
-                .attr("x", (w/3))
+                .attr("x", scatterPlotMargin.left + (w/3))
                 .attr("style","font-size:15px;")
-                .attr("dx", "8.0em")
                 .attr("dy", "-1.5em")
                 .style("stroke", "blue")
                 .text("Single nucleotide substitution");
 
         labels.append("text")
                 .attr("transform", "translate(0," + (h + scatterPlotMargin.top) + ")")
-                .attr("x", (w/3))
+                .attr("x", scatterPlotMargin.left + (w/3))
                 .attr("style","font-size:15px;")
-                .attr("dx", "8.0em")
                 .attr("dy", "-4.5em")
                 .style("stroke", "red")
                 .text("${proteinResult.getScientificAlleleCode()}");
