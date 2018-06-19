@@ -18,7 +18,8 @@ div.apptitle {
     text-align: center;
     padding-top: 15px;
     padding-bottom: 15px;
-    color: darkslategrey;
+/*    color: darkslategrey; */
+    color: white;
 }
 
 div.apptitle-black {
