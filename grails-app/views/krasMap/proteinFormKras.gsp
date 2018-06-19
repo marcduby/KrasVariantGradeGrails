@@ -342,13 +342,13 @@
         var yAxis = d3.svg.axis()
                 .scale(scatterChartYScale)
                 .orient("left")
-                .innerTickSize(-15) //Add some horizontal grid
+                .innerTickSize(7) //Add some horizontal grid
                 .ticks(5);
 
         var xAxis = d3.svg.axis()
                 .scale(scatterChartXScale)
                 .orient("bottom")
-                .innerTickSize(-(15))
+                .innerTickSize(7)
                 .ticks(5);
 
 
@@ -407,13 +407,13 @@
         var yAxisRank = d3.svg.axis()
                 .scale(rankChartYScale)
                 .orient("left")
-                .innerTickSize(-15) //Add some horizontal grid
+                .innerTickSize(7) //Add some horizontal grid
                 .ticks(5);
 
         var xAxisRank = d3.svg.axis()
                 .scale(rankChartXScale)
                 .orient("bottom")
-                .innerTickSize(-(15))
+                .innerTickSize(7)
                 .ticks(5);
 
 
