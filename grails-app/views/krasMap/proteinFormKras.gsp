@@ -222,22 +222,22 @@
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of COSMIC somatic mutations (human tumors)  <a href="#" title="v.84, https://cancer.sanger.ac.uk/cosmic"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td># of COSMIC somatic mutations (human tumors)  <a href="#" title="Forbes et al. Nucleic Acids Res. 2017. Data release v84. Accessed April 2018. https://cancer.sanger.ac.uk/cosmic"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsCosmic()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of GENIE somatic mutations (human tumors)  <a href="#" title="v.3, http://www.cbioportal.org/genie"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td># of GENIE somatic mutations (human tumors)  <a href="#" title="AACR Project GENIE Consortium. Cancer Discov. 2017. Data release 3.0. Accessed April 2018. Gao et al. Sci Signal. 2013. http://www.cbioportal.org/genie"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsGenie()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of TCGA somatic mutations (human tumors)  <a href="#" title="Accessed April 2018, http://www.cbioportal.org/"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td># of TCGA somatic mutations (human tumors)  <a href="#" title="TCGA Research Network. Accessed April 2018. Gao et al. Sci Signal. 2013. http://www.cbioportal.org/"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsTcga()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of ExAC germline mutations (unselected individuals)  <a href="#" title="Accessed April 2018, http://exac.broadinstitute.org/"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td># of ExAC germline mutations (unselected individuals)  <a href="#" title="Lek et al. Nature. 2016. Data release 1.0. Accessed April 2018. http://exac.broadinstitute.org/"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getNumbergermlineMutationsExac()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
@@ -360,7 +360,7 @@
                     'stroke': 'black',
                     'fill': 'none',
                     'stroke-width': '1px',
-                    'opacity': 0.5
+                    'opacity': 1.0
                 })
                 .call(yAxis);
 
@@ -373,7 +373,7 @@
                     'stroke': 'black',
                     'fill': 'none',
                     'stroke-width': '1px',
-                    'opacity': 0.5
+                    'opacity': 1.0
                 })
                 .call(xAxis);
 
@@ -425,7 +425,7 @@
                     'stroke': 'black',
                     'fill': 'none',
                     'stroke-width': '1px',
-                    'opacity': 0.5
+                    'opacity': 1.0
                 })
                 .call(yAxisRank);
 
@@ -438,7 +438,7 @@
                     'stroke': 'black',
                     'fill': 'none',
                     'stroke-width': '1px',
-                    'opacity': 0.5
+                    'opacity': 1.0
                 })
                 .call(xAxisRank);
 
