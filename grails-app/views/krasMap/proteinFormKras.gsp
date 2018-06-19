@@ -277,7 +277,7 @@
 
         var dataRankScale = [{
             key: "rank",
-            x: [0, 4000],
+            x: [-200, 4000],
             y: [-8, 10],
             label: ["point1", "point2"]
         }];
@@ -462,6 +462,14 @@
             var data2 = [{points: [{label: "Multiple", x: 17, y:22}, {label: "Single", x: 22, y:27}]}];
         </g:else>
 
+        <g:if test="${respRank}">
+            var dataRank = [<g:applyCodec encodeAs="none">${respRank}</g:applyCodec>];
+        </g:if>
+        <g:else>
+            var dataRank = [{points: [{label: 1, x: 1500, y: 7}, {label: 1, x: 2700, y:4}]}];
+        </g:else>
+
+        // COSMIC plot
         // plot the multiple/single points
         var scatterPlotGroupsGreen= scatterChartContainer.selectAll(".scatterPlotGroupGreen")
                 .data(data2)
@@ -478,10 +486,26 @@
                 .attr("stroke-width", function(d) { return (d.label == 1 ? "3px" : "2px"); })
                 .attr("fill", function(d) { return (d.label == 1 ? "white" : "blue"); });
 
+        // Rank plot
+        // plot the multiple/single points
+        var scatterPlotGroupsGreyRank = rankChartContainer.selectAll(".scatterPlotGroupGrey")
+                .data(dataRank)
+                .enter().append("g")
+                .attr("class", "scatterPlotGroupGrey");
+
+        var scatterPlotCirclesGreyRank = scatterPlotGroupsGreyRank.selectAll("circle")
+                .data(function(d) { return d.points; })
+                .enter().append("circle")
+                .attr("cx", function(d) { return rankChartXScale(d.x); })
+                .attr("cy", function(d) { return rankChartYScale(d.y); })
+                .attr("r", 4)
+                .attr("stroke", "grey")
+                .attr("stroke-width", 2)
+                .attr("fill", "white");
 
         // plot the selected point
         <g:if test="${proteinResult.getLogNumberSomaticMutationsCosmic() >= 0}">
-            var dataSelected = [{points: [{label: 1, x: ${proteinResult.getLogNumberSomaticMutationsCosmic()}, y: ${proteinResult.getHeatAmount()}}]}];
+            var dataSelected = [{points: [{label: 1, x: ${proteinResult.getLogNumberSomaticMutationsCosmic()}, y: ${proteinResult.getHeatAmount()}, rank: ${proteinResult.getRank()}}]}];
 
         var scatterPlotGroupsRed= scatterChartContainer.selectAll(".scatterPlotGroupRed")
                 .data(dataSelected)
@@ -497,8 +521,23 @@
                 .attr("stroke", "red")
                 .attr("stroke-width", "5px")
                 .attr("fill", "white");
-        </g:if>
 
+        var scatterPlotGroupsRedRank = rankChartContainer.selectAll(".scatterPlotGroupRankRed")
+                .data(dataSelected)
+                .enter().append("g")
+                .attr("class", "scatterPlotGroupRankRed");
+
+        var scatterPlotCirclesRedRank = scatterPlotGroupsRedRank.selectAll("circle")
+                .data(function(d) { return d.points; })
+                .enter().append("circle")
+                .attr("cx", function(d) { return rankChartXScale(d.rank); })
+                .attr("cy", function(d) { return rankChartYScale(d.y); })
+                .attr("r", 5)
+                .attr("stroke", "red")
+                .attr("stroke-width", "5px")
+                .attr("fill", "white");
+
+        </g:if>
 
         var labels = svg.append("g")
                 .attr("class", "labels");
@@ -562,6 +601,14 @@
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
                 .text("Functional Score");
+
+        labels.append("text")
+                .attr("transform", "translate(0," + (h + rankPlotMargin.top) + ")")
+                .attr("x", rankPlotMargin.left + (wRank/3))
+                .attr("style","font-size:15px;")
+                .attr("dy", "-4.5em")
+                .style("stroke", "red")
+                .text("${proteinResult.getScientificAlleleCode()}");
 
     </script>
 

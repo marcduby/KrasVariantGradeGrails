@@ -247,6 +247,19 @@ public class KrasMatrixBuilder {
                 positionMatrixBean.addDoubleHeatEntry(krasDataBean.getAltAllele(), new Double(krasDataBean.getExacGermlineIncidence()));
             }
 
+            // get the rank position matrix for the position
+            positionMatrixBean = this.getPositionMastrix(heatMapBeanByTypeMap, KrasDataBean.RANK, krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+            // heatMapBean.getPositionMatrixBean(krasDataBean.getPosition(), krasDataBean.getRefAllele(), true);
+
+            // add an entry for the alt allele
+            if (positionMatrixBean.getDoubleHeatEntry(krasDataBean.getAltAllele()) != null) {
+                throw new GradeException("Already have double entry at alt allele: " + krasDataBean.getAltAllele());
+
+            } else {
+                positionMatrixBean.addDoubleHeatEntry(krasDataBean.getAltAllele(), new Double(krasDataBean.getRank()));
+            }
+
+
 
 
 

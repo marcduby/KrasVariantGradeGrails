@@ -41,6 +41,7 @@ public class KrasProteinResult extends ProteinResult {
     private Double numberSomaticMutationsTcga;
     private Double numberSomaticMutationsGenie;
     private Double numbergermlineMutationsExac;
+    private Double rank;
 
     // cmiter specific properties
     private String somaticIarcMutationCount;
@@ -383,6 +384,14 @@ public class KrasProteinResult extends ProteinResult {
             log = -1.0;
         }
         return log;
+    }
+
+    public Double getRank() {
+        return rank;
+    }
+
+    public void setRank(Double rank) {
+        this.rank = rank;
     }
 
     public void setNumberSomaticMutationsCosmic(Double numberSomaticMutationsCosmic) {

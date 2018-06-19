@@ -51,7 +51,8 @@ public class KrasMatrixParser {
 
     // KRAS beans for plots
     private List<KrasDataBean> krasDataBeanList = null;
-    private List<KrasPLotBean> krasPLotBeanList = null;
+    private List<KrasPLotBean> krasPLotBeanList = null;             // for cosmic plot
+    private List<KrasPLotBean> krasRankPLotBeanList = null;         // for rank plot
 
     // singleton variable
     private static KrasMatrixParser matrixParser;
@@ -191,6 +192,9 @@ public class KrasMatrixParser {
             // set the plot bean
             this.krasPLotBeanList = this.buildPlotBeanList(this.krasDataBeanList);
 
+            // set the plot bean
+            this.krasRankPLotBeanList = this.buildRankPlotBeanList(this.krasDataBeanList);
+
             // get the maps of heat maps from the list of data
             this.heatMapBeanMap = krasMatrixBuilder.loadHeatMaps(this.krasDataBeanList);
 
@@ -202,7 +206,7 @@ public class KrasMatrixParser {
     public List<KrasPLotBean> buildPlotBeanList(List<KrasDataBean> beanList) {
         // local variables
         List<KrasPLotBean> returnList = new ArrayList<KrasPLotBean>();
-        int max = 10000;
+        int max = 100000;
 
         // loop
         for (int i = 0; i < beanList.size(); i++) {
@@ -236,6 +240,39 @@ public class KrasMatrixParser {
     }
 
     /**
+     * build the rank plot list
+     *
+     * @param beanList
+     * @return
+     */
+    public List<KrasPLotBean> buildRankPlotBeanList(List<KrasDataBean> beanList) {
+        // local variables
+        List<KrasPLotBean> returnList = new ArrayList<KrasPLotBean>();
+        int max = 100000;
+
+        // loop
+        for (int i = 0; i < beanList.size(); i++) {
+            KrasDataBean krasDataBean = beanList.get(i);
+
+            // create a new plot bean
+            KrasPLotBean krasPLotBean = new KrasPLotBean();
+            krasPLotBean.setRank(krasDataBean.getRank());
+            krasPLotBean.setScore(krasDataBean.getFunctionalMeanScore());
+
+            // add to list
+            returnList.add(krasPLotBean);
+
+            // test
+            if (i > max) {
+                break;
+            }
+        }
+
+        // return
+        return returnList;
+    }
+
+    /**
      * return the plot map
      *
      * @return
@@ -246,6 +283,22 @@ public class KrasMatrixParser {
 
         // set list on map
         plotMap.put("points", this.krasPLotBeanList);
+
+        // return
+        return plotMap;
+    }
+
+    /**
+     * return the plot map
+     *
+     * @return
+     */
+    public Map<String, List> getRankPlotMap() {
+        // local variables
+        Map<String, List> plotMap = new HashMap<String, List>();
+
+        // set list on map
+        plotMap.put("points", this.krasRankPLotBeanList);
 
         // return
         return plotMap;

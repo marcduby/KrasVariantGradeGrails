@@ -77,10 +77,12 @@ class KrasMapController {
 
     def dataLoad() {
         def plotData = this.krasMapService.getPlotMap();
+        def plotRankData = this.krasMapService.getRankPlotMap();
 
         String myResp = (plotData as JSON).toString()
+        String myRankResp = (plotRankData as JSON).toString()
 
-        render(view: "testnewd3data", model:[resp: myResp])
+        render(view: "testnewd3data", model:[resp: myResp, respRank: myRankResp])
 
     }
 
@@ -164,8 +166,11 @@ class KrasMapController {
         def plotData = this.krasMapService.getPlotMap();
         String myResp = (plotData as JSON).toString()
 
+        def plotRankData = this.krasMapService.getRankPlotMap();
+        String myRespRank = (plotRankData as JSON).toString()
+
         // render
-        render(view: 'proteinFormKras', model: [resp: myResp, lastQuery: lastQuery, lastPrevalence: lastPrevalence, errorMessage: errorMessage, proteinResult: proteinResult, referenceLetterList: referenceLetterList])
+        render(view: 'proteinFormKras', model: [resp: myResp, respRank: myRespRank, lastQuery: lastQuery, lastPrevalence: lastPrevalence, errorMessage: errorMessage, proteinResult: proteinResult, referenceLetterList: referenceLetterList])
 
     }
 }

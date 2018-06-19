@@ -83,6 +83,26 @@ class KrasMapService {
         return resp
     }
 
+    public Map getRankPlotMap() {
+        // following is the map data structure being returned for the point plot
+//        var data2 = [{points: [{label: "Multiple", x: 17, y:22}, {label: "Single", x: 22, y:27}]}];
+
+        def resp = [:]
+        resp.points = []
+        List<KrasPLotBean> krasDataBeanList = this.getMatrixParser().getRankPlotMap().get("points");
+
+        for (KrasPLotBean krasPLotBean : krasDataBeanList) {
+            def bean = [:]
+            bean.x = krasPLotBean.rank
+            bean.y = krasPLotBean.score
+            bean.label = 1
+            resp.points << bean
+        }
+
+//        return this.getMatrixParser().getPlotMap();
+        return resp
+    }
+
     /**
      * return result from variant allele input
      *
@@ -186,6 +206,10 @@ class KrasMapService {
             // get the number nucleotide substitution string
             stringGradeValue = this.getMatrixParser().getStringMatrixValueAtPositionAndLetterAndType(position, allele, KrasDataBean.NUM_NUCLEOTIDE, true);
             result.setNumberNucleotideSubstitution(stringGradeValue);
+
+            // get the rank
+            doubleGradeValue = this.getMatrixParser().getDoubleMatrixValueAtPositionAndLetterAndType(position, allele, KrasDataBean.RANK, true);
+            result.setRank(doubleGradeValue);
 
 
 //
