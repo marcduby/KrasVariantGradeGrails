@@ -128,7 +128,7 @@
                         <p class="bold-text">Enter Variant</p>
                         <input id="searchbox" value="${lastQuery}" name="query" class="form-control input-lg awesomebar searchbox" type="text" placeholder="Search for a protein change or variant"/>
                         <p class="text-muted small-text">
-                            Examples - Protein change <a href="#" title='Numbering with respect to p53 isoform a'><g:img dir="images" file="question2.png" width="17" height="17"/></a>:
+                            Examples - Protein change <a href="#" title='Numbering with respect to KRAS isoform 2B'><g:img dir="images" file="question2.png" width="17" height="17"/></a>:
                             <g:link action="proteinSearch" controller="krasMap" params="[query: 'p.G13P', prevalence: '1.0e-5']">p.G13P</g:link> or
                             <g:link action="proteinSearch" controller="krasMap" params="[query: 'p.Gly13Pro', prevalence: '1.0e-5']">p.Gly13Pro</g:link>,
 
@@ -207,12 +207,12 @@
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td>Protein change <a href="#" title="Numbering with respect to KRAS isoform a"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td>Protein change <a href="#" title="Numbering with respect to KRAS isoform 2B"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td>${proteinResult.getScientificAlleleCode()}</td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td>Number of nucleotide substitution  <a href="#" title="TBD"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td>Number of nucleotide substitution</td>
                                             <td>${proteinResult.getNumberNucleotideSubstitution()}</td>
                                         </tr>
 
@@ -222,22 +222,22 @@
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of COSMIC somatic mutations (human tumors)  <a href="#" title="TBD"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td># of COSMIC somatic mutations (human tumors)  <a href="#" title="v.84, https://cancer.sanger.ac.uk/cosmic"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsCosmic()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of GENIE somatic mutations (human tumors)  <a href="#" title="TBD"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td># of GENIE somatic mutations (human tumors)  <a href="#" title="v.3, http://www.cbioportal.org/genie"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsGenie()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of TCGA somatic mutations (human tumors)  <a href="#" title="TBD"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td># of TCGA somatic mutations (human tumors)  <a href="#" title="Accessed April 2018, http://www.cbioportal.org/"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getNumberSomaticMutationsTcga()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td># of ExAC germline mutations (unselected individuals)  <a href="#" title="Kato et al. PNAS. 2003"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td># of ExAC germline mutations (unselected individuals)  <a href="#" title="Accessed April 2018, http://exac.broadinstitute.org/"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getNumbergermlineMutationsExac()}" type="number" maxFractionDigits="0" /></td>
                                         </tr>
 
