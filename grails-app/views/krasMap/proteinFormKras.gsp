@@ -122,7 +122,7 @@
             <div class="col-md-12">
                 <g:form name="myForm" action="proteinSearch" id="1">
                     <div class="formWrapper">
-                        <div class="description">The classifier provides functional classification for any missense variant using comprehensive experimental data. It currently supports functional classification for missense variants in the gene <span class="miterItalic">KRAS</span>.
+                        <div class="description">Systematic characterization of transforming potential of any missense variant of <span class="miterItalic">KRAS</span>.
                         <br/>See <a href="https://www.nature.com/ng/" target="newWindow">paper link</a> for details.</div>
                         <div class="apptitle-black description">KRAS</div>
                         <p class="bold-text">Enter Variant</p>
@@ -217,7 +217,7 @@
                                         </tr>
 
                                         <tr class="tightrow">
-                                            <td>Experimental function score  <a href="#" title="Also referred to as combined phenotype score in Ly et al. 2018"><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
+                                            <td>Experimental function score  <a href="#" title="Z-score calculated from log2 fold change of Day 7 abundance compared to Day 0 abundance; also referred to transforming potential in Ly et al. 2018."><g:img dir="images" file="question2.png" width="17" height="17"/></a></td>
                                             <td><g:formatNumber number="${proteinResult.getHeatAmount()}" type="number" maxFractionDigits="3" /></td>
                                         </tr>
 
