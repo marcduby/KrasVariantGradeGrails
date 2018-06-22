@@ -8,7 +8,7 @@ class UrlMappings {
         }
 
 //        "/"(view:"/index")
-        "/" (controller: "heatMap", action: "proteinSearch")
+        "/" (controller: "krasMap", action: "proteinSearch")
         "500"(view:'/error')
 	}
 }
