@@ -503,24 +503,26 @@
                 .attr("stroke-width", 2)
                 .attr("fill", "white");
 
-        // plot the selected point
+        // START - plot the selected point
+        var dataSelected = [{points: [{label: 1, x: ${proteinResult.getLogNumberSomaticMutationsCosmic()}, y: ${proteinResult.getHeatAmount()}, rank: ${proteinResult.getRank()}}]}];
         <g:if test="${proteinResult.getLogNumberSomaticMutationsCosmic() >= 0}">
-            var dataSelected = [{points: [{label: 1, x: ${proteinResult.getLogNumberSomaticMutationsCosmic()}, y: ${proteinResult.getHeatAmount()}, rank: ${proteinResult.getRank()}}]}];
 
-        var scatterPlotGroupsRed= scatterChartContainer.selectAll(".scatterPlotGroupRed")
-                .data(dataSelected)
-                .enter().append("g")
-                .attr("class", "scatterPlotGroupRed");
+            var scatterPlotGroupsRed= scatterChartContainer.selectAll(".scatterPlotGroupRed")
+                    .data(dataSelected)
+                    .enter().append("g")
+                    .attr("class", "scatterPlotGroupRed");
 
-        var scatterPlotCirclesRed = scatterPlotGroupsRed.selectAll("circle")
-                .data(function(d) { return d.points; })
-                .enter().append("circle")
-                .attr("cx", function(d) { return scatterChartXScale(d.x); })
-                .attr("cy", function(d) { return scatterChartYScale(d.y); })
-                .attr("r", 5)
-                .attr("stroke", "red")
-                .attr("stroke-width", "5px")
-                .attr("fill", "white");
+            var scatterPlotCirclesRed = scatterPlotGroupsRed.selectAll("circle")
+                    .data(function(d) { return d.points; })
+                    .enter().append("circle")
+                    .attr("cx", function(d) { return scatterChartXScale(d.x); })
+                    .attr("cy", function(d) { return scatterChartYScale(d.y); })
+                    .attr("r", 5)
+                    .attr("stroke", "red")
+                    .attr("stroke-width", "5px")
+                    .attr("fill", "white");
+
+        </g:if>
 
         var scatterPlotGroupsRedRank = rankChartContainer.selectAll(".scatterPlotGroupRankRed")
                 .data(dataSelected)
@@ -536,8 +538,7 @@
                 .attr("stroke", "red")
                 .attr("stroke-width", "5px")
                 .attr("fill", "white");
-
-        </g:if>
+        // END - plot the selected point
 
         var labels = svg.append("g")
                 .attr("class", "labels");
