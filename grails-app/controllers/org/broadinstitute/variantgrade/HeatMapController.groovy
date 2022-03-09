@@ -10,7 +10,7 @@ class HeatMapController {
     private String passcode = "broadvariantfunction";
 
     def index() {
-        forward action: 'login'
+        // forward action: 'login'
     }
 
     def login() {

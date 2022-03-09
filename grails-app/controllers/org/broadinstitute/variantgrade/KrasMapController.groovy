@@ -12,10 +12,10 @@ class KrasMapController {
     private String passcode = "broadvariantfunction";
 
     def index() {
-        forward action: 'login'
+        // forward action: 'login'
     }
 
-    def login() {
+    def loginOld() {
         String username = params.username;
         String password = params.password;
         Boolean loggedIn = true;
@@ -56,7 +56,7 @@ class KrasMapController {
         }
     }
 
-    def loginOld() {
+    def login() {
         // get the protein reference letter list
         List<String> referenceLetterList = this.krasMapService.getProteinReferenceLetterList();
 
@@ -89,9 +89,9 @@ class KrasMapController {
 
     def proteinSearch() {
         // check that logged in
-        if (!session.user) {
-            redirect(action: 'login')
-        }
+        // if (!session.user) {
+        //     redirect(action: 'login')
+        // }
 
         // log
         log.info("in protein search, got params: " + params)
